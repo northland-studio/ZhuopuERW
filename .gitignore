@@ -42,3 +42,4 @@ _deploy.tgz
 scripts/.env.production
 _*.tgz
 _*.zip
+desktop/electron/release/

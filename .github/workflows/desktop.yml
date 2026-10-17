@@ -1,0 +1,117 @@
+name: 桌面端构建
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - "desktop/**"
+      - "web/**"
+      - ".github/workflows/desktop.yml"
+  workflow_dispatch:
+  release:
+    types: [published]
+
+jobs:
+  electron:
+    name: Electron（${{ matrix.os }}）
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - uses: pnpm/action-setup@v4
+
+      - name: 安装依赖并构建前端
+        run: |
+          pnpm install --frozen-lockfile --config.minimum-release-age=0
+          pnpm --filter zhuopu-web build
+          node scripts/copy-web-dist.mjs
+
+      - name: 安装 Electron 依赖
+        working-directory: desktop/electron
+        run: pnpm install --config.minimum-release-age=0
+
+      - name: 打包安装程序
+        working-directory: desktop/electron
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            npx electron-builder --win --x64 --publish never
+          else
+            npx electron-builder --linux AppImage --publish never
+          fi
+        shell: bash
+
+      - name: 上传安装包
+        uses: actions/upload-artifact@v4
+        with:
+          name: electron-${{ runner.os }}
+          path: |
+            desktop/electron/release/**
+          if-no-files-found: error
+          retention-days: 30
+
+  tauri:
+    name: Tauri（${{ matrix.os }}）
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 安装 Tauri 系统依赖（Linux）
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev \
+            patchelf libssl-dev build-essential curl wget file
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - uses: pnpm/action-setup@v4
+
+      - name: 安装 Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: 缓存 Rust
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: desktop/tauri/src-tauri
+
+      - name: 构建前端
+        run: |
+          pnpm install --frozen-lockfile --config.minimum-release-age=0
+          pnpm --filter zhuopu-web build
+
+      - name: 准备图标
+        run: |
+          mkdir -p desktop/tauri/src-tauri/icons
+          cp web/public/brand/logo.png desktop/tauri/src-tauri/icons/icon.png
+
+      - name: 安装 tauri-cli
+        run: cargo install tauri-cli --version "^2" --locked
+
+      - name: 打包
+        working-directory: desktop/tauri/src-tauri
+        run: cargo tauri build
+
+      - name: 上传安装包
+        uses: actions/upload-artifact@v4
+        with:
+          name: tauri-${{ runner.os }}
+          path: |
+            desktop/tauri/src-tauri/target/release/bundle/**
+          if-no-files-found: warn
+          retention-days: 30

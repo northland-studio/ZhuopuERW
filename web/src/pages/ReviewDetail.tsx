@@ -593,9 +593,14 @@ function ImportModal({
                 `/api/reviews/${reviewId}/split`,
                 { body: { text, type: type || undefined } }
             );
+            // 全自动：切分结果直接落库，不再要求老师勾选确认
             setDraft(r.draft);
             setKeep(new Set(r.draft.questions.map((_, i) => i)));
-            push(`切出 ${r.draft.passages.length} 篇原文、${r.draft.questions.length} 道题`, 'ok');
+            const applied = await api<{ review: Review }>(`/api/reviews/${reviewId}/apply`, {
+                body: { passages: r.draft.passages, questions: r.draft.questions }
+            });
+            push(`已导入 ${r.draft.passages.length} 篇原文、${r.draft.questions.length} 道题`, 'ok');
+            onDone(applied.review);
         } catch (e) {
             push((e as Error).message, 'bad');
         } finally {
@@ -755,6 +760,7 @@ function ImportModal({
 /* ---------------- 底部：按原文分组长难句 ---------------- */
 
 function LongSentenceBar({ review, onJump }: { review: Review; onJump: (index: number) => void }) {
+    const [showAnswer, setShowAnswer] = useState(false);
     // 每篇原文的长难句来自 passages.meta.longSentences（讲评时按篇写入），
     // 没有的则回落到整份讲评的 longSentences，保证总有内容可看。
     const groups = review.passages
@@ -783,7 +789,12 @@ function LongSentenceBar({ review, onJump }: { review: Review; onJump: (index: n
         <section className="rd-longbar">
             <div className="rd-longbar-head">
                 <span>长难句翻译（按原文汇总）</span>
-                <span className="tiny muted">{total || fallback.length} 句</span>
+                <span className="row" style={{ gap: 10 }}>
+                    <span className="tiny muted">{total || fallback.length} 句</span>
+                    <button className="btn btn-sm btn-quiet" onClick={() => setShowAnswer((v) => !v)}>
+                        {showAnswer ? '隐藏译文' : '显示译文'}
+                    </button>
+                </span>
             </div>
             <div className="rd-longbar-body">
                 {groups.length > 0
@@ -800,8 +811,10 @@ function LongSentenceBar({ review, onJump }: { review: Review; onJump: (index: n
                               {g.list.map((s, i) => (
                                   <div className="rd-long" key={i}>
                                       <div className="rd-long-en">{s.sentence}</div>
-                                      {s.analysis && <div style={{ marginTop: 6 }}>{s.analysis}</div>}
-                                      {s.translation && <div style={{ marginTop: 4, color: 'var(--ink-500)' }}>{s.translation}</div>}
+                                      {showAnswer && s.analysis && <div style={{ marginTop: 6 }}>{s.analysis}</div>}
+                                      {showAnswer && s.translation && (
+                                          <div style={{ marginTop: 4, color: 'var(--ink-500)' }}>{s.translation}</div>
+                                      )}
                                   </div>
                               ))}
                           </div>
@@ -809,8 +822,10 @@ function LongSentenceBar({ review, onJump }: { review: Review; onJump: (index: n
                     : fallback.map((s, i) => (
                           <div className="rd-long" key={i}>
                               <div className="rd-long-en">{s.sentence}</div>
-                              {s.analysis && <div style={{ marginTop: 6 }}>{s.analysis}</div>}
-                              {s.translation && <div style={{ marginTop: 4, color: 'var(--ink-500)' }}>{s.translation}</div>}
+                              {showAnswer && s.analysis && <div style={{ marginTop: 6 }}>{s.analysis}</div>}
+                              {showAnswer && s.translation && (
+                                  <div style={{ marginTop: 4, color: 'var(--ink-500)' }}>{s.translation}</div>
+                              )}
                           </div>
                       ))}
             </div>

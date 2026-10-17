@@ -3,7 +3,8 @@ import { z } from 'zod';
 import { requireAuth } from '../middleware/auth.js';
 import { all, get, now } from '../db/index.js';
 import { logger } from '../logger.js';
-import { analyzeQuestion, splitWorksheet, summarizePassage } from '../services/analysis.js';
+import { analyzeQuestion, splitWorksheet } from '../services/analysis.js';
+import { analyzePassageBatch } from '../services/llm/batch.js';
 import {
     appendQuestions,
     createReview,
@@ -263,67 +264,86 @@ reviewsRouter.post('/:id/analyze', async (req, res, next) => {
 
         const results: { questionId: number; ok: boolean; error?: string }[] = [];
         let tokens = 0;
-        const modelUsed = { model: '' };
+        let modelUsed = '';
+
+        // 按篇分组：每篇一次调用，答案/长难句/词汇一次拿全
+        type Q = (typeof review.questions)[number];
+        const byPassage = new Map<number | null, Q[]>();
 
         for (const qid of targetIds) {
             const q = review.questions.find((x) => x.id === qid);
             if (!q) { results.push({ questionId: qid, ok: false, error: '题目不存在' }); continue; }
-            const passage = review.passages.find((p) => p.id === q.passageId) ?? review.passages[0];
-            if (!passage) { results.push({ questionId: qid, ok: false, error: '缺少原文' }); continue; }
+            const key = q.passageId ?? review.passages[0]?.id ?? null;
+            if (!byPassage.has(key)) byPassage.set(key, []);
+            byPassage.get(key)!.push(q);
+        }
+
+        for (const [passageId, qs] of byPassage.entries()) {
+            const passage = review.passages.find((x) => x.id === passageId) ?? review.passages[0];
+            if (!passage || !qs.length) continue;
             try {
-                const { analysis, source, usage, model } = await analyzeQuestion(
+                const batch = await analyzePassageBatch(
                     {
-                        type: q.type,
-                        numberLabel: q.numberLabel,
-                        stem: q.stem,
-                        options: q.options,
+                        type: qs[0]!.type,
                         passage: passage.content,
-                        knownAnswer: q.answer
+                        passageLabel: passage.label,
+                        questions: qs.map((q) => ({
+                            numberLabel: q.numberLabel,
+                            stem: q.stem,
+                            options: q.options,
+                            answer: q.answer
+                        }))
                     },
                     { userId: req.user!.id }
                 );
-                saveQuestionAnalysis(q.id, analysis, model, source);
-                tokens += usage.total;
-                modelUsed.model = model;
-                results.push({ questionId: qid, ok: true });
-            } catch (e) {
-                logger.warn(`题目 #${qid} 讲评失败：${(e as Error).message}`);
-                results.push({ questionId: qid, ok: false, error: (e as Error).message });
-            }
-        }
 
-        // 整篇汇总：本次涉及的原文各做一次（词汇表 / 长难句 / 概要）
-        const fresh = getReview(req.user!.id, review.id)!;
-        const involved = new Set(fresh.questions.filter((q) => targetIds.includes(q.id)).map((q) => q.passageId));
-        const summaryParts: { passageIndex: number; summary: string }[] = [];
-        const vocab: unknown[] = [];
-        const longSentences: unknown[] = [];
+                for (const item of batch.questions) {
+                    const target = qs.find((q) => String(q.numberLabel).trim() === String(item.numberLabel).trim());
+                    if (!target) continue;
+                    saveQuestionAnalysis(target.id, item.analysis, batch.model, item.source);
+                    results.push({ questionId: target.id, ok: true });
+                }
+                // 未返回的题目记失败
+                for (const q of qs) {
+                    if (!results.some((r) => r.questionId === q.id)) {
+                        results.push({ questionId: q.id, ok: false, error: '模型未返回该题' });
+                    }
+                }
 
-        for (const [index, p] of fresh.passages.entries()) {
-            if (involved.size && p.id != null && !involved.has(p.id)) continue;
-            try {
-                const s = await summarizePassage(p.content, p.label, index + 1, { userId: req.user!.id });
-                summaryParts.push({ passageIndex: index + 1, summary: s.analysis.summary });
-                vocab.push(...s.analysis.vocabulary);
-                longSentences.push(...s.analysis.longSentences);
-                tokens += s.usage.total;
-                // 按篇存一份，底部「长难句翻译」栏按原文分组展示
-                if (p.id != null) {
-                    savePassageMeta(p.id, {
-                        summary: s.analysis.summary,
-                        longSentences: s.analysis.longSentences,
-                        vocabulary: s.analysis.vocabulary
+                // 这篇的汇总（长难句与词汇）随首次分析一起落库
+                if (passage.id != null) {
+                    savePassageMeta(passage.id, {
+                        summary: batch.passage.summary,
+                        vocabulary: batch.passage.vocabulary,
+                        longSentences: batch.passage.longSentences
                     });
                 }
+                tokens += batch.usage.total;
+                modelUsed = batch.model;
             } catch (e) {
-                logger.warn(`原文 #${p.id} 汇总失败：${(e as Error).message}`);
+                logger.warn(`原文 #${passage.id} 批量讲评失败：${(e as Error).message}`);
+                for (const q of qs) results.push({ questionId: q.id, ok: false, error: (e as Error).message });
             }
         }
-        if (summaryParts.length) {
+
+        // 汇总整份讲评的词汇表与长难句（取各篇的并集）
+        const after = getReview(req.user!.id, review.id)!;
+        const metaOf = (passageId: number | null) =>
+            (after.passages.find((x) => x.id === passageId) as { meta?: { vocabulary?: unknown[]; longSentences?: unknown[]; summary?: string } } | undefined)?.meta ?? {};
+        const allVocab: unknown[] = [];
+        const allLong: unknown[] = [];
+        const summaries: string[] = [];
+        for (const ps of after.passages) {
+            const m = metaOf(ps.id);
+            if (Array.isArray(m.vocabulary)) allVocab.push(...m.vocabulary);
+            if (Array.isArray(m.longSentences)) allLong.push(...m.longSentences);
+            if (m.summary) summaries.push(m.summary);
+        }
+        if (allVocab.length || allLong.length || summaries.length) {
             saveReviewSummary(review.id, {
-                summary: summaryParts.map((s) => s.summary).filter(Boolean).join('\n'),
-                vocab,
-                longSentences
+                summary: summaries.join('\n'),
+                vocab: allVocab,
+                longSentences: allLong
             });
         }
 
@@ -333,7 +353,7 @@ reviewsRouter.post('/:id/analyze', async (req, res, next) => {
             analyzed: done,
             failed: results.filter((r) => !r.ok),
             tokens,
-            model: modelUsed.model,
+            model: modelUsed,
             review: getReview(req.user!.id, review.id)
         });
     } catch (e) {
