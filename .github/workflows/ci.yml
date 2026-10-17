@@ -26,7 +26,7 @@ jobs:
         uses: pnpm/action-setup@v4
 
       - name: 安装依赖
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --config.minimum-release-age=0
 
       - name: 类型检查（服务端 + 前端）
         run: pnpm typecheck

@@ -4,6 +4,8 @@
 
 # 原生模块的安装脚本一律由 scripts/ensure-native.mjs 兜底：
 # 工作区内执行的 pnpm 来自 Electron 运行时，直接跑依赖的 install 脚本会因 Electron 的模块解析失败
+minimumReleaseAge: 0
+
 allowBuilds:
   better-sqlite3: false
   esbuild: false
