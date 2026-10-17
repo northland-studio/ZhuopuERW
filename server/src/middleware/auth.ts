@@ -12,16 +12,20 @@ export interface JwtPayload {
     exp?: number;
 }
 
-declare module 'express-serve-static-core' {
-    interface Request {
-        user?: { id: number; role: Role; email: string; username: string };
+declare global {
+    namespace Express {
+        interface Request {
+            user?: { id: number; role: Role; email: string; username: string };
+        }
     }
 }
 
 export const TOKEN_COOKIE = 'zp_token';
 
-export function signToken(uid: number, role: Role, expiresIn = '30d'): string {
-    return jwt.sign({ uid, role } satisfies Omit<JwtPayload, 'iat' | 'exp'>, env.jwtSecret, { expiresIn });
+export function signToken(uid: number, role: Role, expiresIn: string = '30d'): string {
+    const payload: Omit<JwtPayload, 'iat' | 'exp'> = { uid, role };
+    const options = { expiresIn } as jwt.SignOptions;
+    return jwt.sign(payload, env.jwtSecret, options);
 }
 
 export function verifyToken(token: string): JwtPayload | null {

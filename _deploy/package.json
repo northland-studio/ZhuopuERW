@@ -1,0 +1,23 @@
+{
+  "name": "zhuopu-erw",
+  "version": "0.1.0",
+  "private": true,
+  "description": "琢璞英语讲评工作台 Zhuopu English Review Workspace",
+  "license": "UNLICENSED",
+  "author": "北域工作室 Northland Studio",
+  "packageManager": "pnpm@11.8.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "pnpm --parallel --filter \"./server\" --filter \"./web\" dev",
+    "dev:server": "pnpm --filter zhuopu-server dev",
+    "dev:web": "pnpm --filter zhuopu-web dev",
+    "build": "pnpm --filter zhuopu-server build && pnpm --filter zhuopu-web build",
+    "typecheck": "pnpm --filter zhuopu-server typecheck && pnpm --filter zhuopu-web typecheck",
+    "lint": "pnpm --filter zhuopu-server lint && pnpm --filter zhuopu-web lint",
+    "test": "pnpm --filter zhuopu-server test",
+    "migrate": "pnpm --filter zhuopu-server migrate",
+    "postinstall": "node scripts/ensure-native.mjs"
+  }
+}
