@@ -5,6 +5,7 @@ on:
     branches: [main, master]
   pull_request:
     branches: [main, master]
+  workflow_dispatch:
 
 jobs:
   verify:
@@ -25,6 +26,13 @@ jobs:
       - name: 安装 pnpm
         uses: pnpm/action-setup@v4
 
+      - name: 缓存 pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/pnpm/store
+          key: pnpm-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: pnpm-${{ runner.os }}-
+
       - name: 安装依赖
         run: pnpm install --frozen-lockfile --config.minimum-release-age=0
 
@@ -39,3 +47,59 @@ jobs:
           JWT_SECRET: ci-only-secret-value-please-change-1234567890
           SMTP_PASS: ci-dummy-password
         run: pnpm --filter zhuopu-server migrate
+
+      # ---------- 产物：可在 Actions 运行页面底部直接下载 ----------
+      - name: 打包前端产物
+        run: |
+          cd web/dist && tar -czf "$GITHUB_WORKSPACE/zhuopu-web-dist.tgz" .
+
+      - name: 打包服务端产物
+        run: |
+          cd server/dist && tar -czf "$GITHUB_WORKSPACE/zhuopu-server-dist.tgz" .
+
+      - name: 上传前端产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: zhuopu-web-dist
+          path: zhuopu-web-dist.tgz
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: 上传服务端产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: zhuopu-server-dist
+          path: zhuopu-server-dist.tgz
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: 写入构建信息
+        run: |
+          {
+            echo "提交：${{ github.sha }}"
+            echo "分支：${{ github.ref_name }}"
+            echo "时间：$(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+            echo "前端入口：$(grep -o 'assets/index-[^\"]*\.js' web/dist/index.html | head -1)"
+            echo "服务端入口：server/dist/index.js"
+          } > "$GITHUB_WORKSPACE/build-info.txt"
+
+      - name: 上传构建信息
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-info
+          path: build-info.txt
+          retention-days: 14
+
+      - name: 在任务摘要里给出产物说明
+        run: |
+          {
+            echo "## 本次构建产物"
+            echo ""
+            echo "| 产物 | 内容 | 用法 |"
+            echo "| --- | --- | --- |"
+            echo "| \`zhuopu-web-dist\` | 前端构建产物（含字体与校徽） | 解压后覆盖线上的 \`web/dist\` |"
+            echo "| \`zhuopu-server-dist\` | 服务端编译产物（JS） | 解压后覆盖线上的 \`server/dist\` |"
+            echo "| \`build-info\` | 提交、分支、构建时间、前端入口文件名 | 核对线上是否与仓库一致 |"
+            echo ""
+            echo "在 Actions 运行页面底部的 Artifacts 区域下载。"
+          } >> "$GITHUB_STEP_SUMMARY"
