@@ -20,30 +20,40 @@
     "productName": "琢璞英语讲评工作台",
     "files": [
       "electron/**",
-      "web-dist/**"
+      "package.json"
     ],
     "extraResources": [
       {
-        "from": "../web/dist",
+        "from": "web-dist",
         "to": "web-dist"
       }
     ],
     "win": {
-      "target": ["nsis"],
-      "icon": "../web/public/brand/logo.png"
+      "target": [
+        "nsis"
+      ],
+      "icon": "web-dist/brand/logo.png"
     },
     "mac": {
-      "target": ["dmg"],
-      "icon": "../web/public/brand/logo.png"
+      "target": [
+        "dmg"
+      ],
+      "icon": "web-dist/brand/logo.png"
     },
     "linux": {
-      "target": ["AppImage"],
-      "icon": "../web/public/brand/logo.png"
+      "target": [
+        "AppImage"
+      ],
+      "icon": "web-dist/brand/logo.png"
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true
+    },
+    "asar": true,
+    "directories": {
+      "output": "release"
     }
   }
 }
