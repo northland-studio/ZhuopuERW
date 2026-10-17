@@ -1,0 +1,72 @@
+﻿Electron（windows-latest）	打包安装程序	﻿2026-10-17T20:26:16.0555684Z ##[group]Run if [ "$RUNNER_OS" = "Windows" ]; then
+Electron（windows-latest）	打包安装程序	2026-10-17T20:26:16.0555967Z ^[[36;1mif [ "$RUNNER_OS" = "Windows" ]; then^[[0m
+Electron（windows-latest）	打包安装程序	2026-10-17T20:26:16.0556174Z ^[[36;1m  npx electron-builder --win --x64 --publish never^[[0m
+Electron（windows-latest）	打包安装程序	2026-10-17T20:26:16.0556360Z ^[[36;1melse^[[0m
+Electron（windows-latest）	打包安装程序	2026-10-17T20:26:16.0556519Z ^[[36;1m  npx electron-builder --linux AppImage --publish never^[[0m
+Electron（windows-latest）	打包安装程序	2026-10-17T20:26:16.0556705Z ^[[36;1mfi^[[0m
+Electron（windows-latest）	打包安装程序	2026-10-17T20:26:16.0567844Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+Electron（windows-latest）	打包安装程序	2026-10-17T20:26:16.0568094Z env:
+Electron（windows-latest）	打包安装程序	2026-10-17T20:26:16.0568252Z   PNPM_HOME: C:\Users\runneradmin\setup-pnpm\node_modules\.bin
+Electron（windows-latest）	打包安装程序	2026-10-17T20:26:16.0569871Z   GH_TOKEN: ***
+Electron（windows-latest）	打包安装程序	2026-10-17T20:26:16.0569989Z ##[endgroup]
+Electron（windows-latest）	打包安装程序	2026-10-17T20:26:17.1540138Z npm warn exec The following package was not found and will be installed: electron-builder@26.15.3
+Electron（windows-latest）	打包安装程序	2026-10-17T20:26:31.3980270Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+Electron（windows-latest）	打包安装程序	2026-10-17T20:26:35.2570334Z npm warn deprecated rimraf@2.6.3: Rimraf versions prior to v4 are no longer supported
+Electron（windows-latest）	打包安装程序	2026-10-17T20:26:35.5865889Z npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+Electron（windows-latest）	打包安装程序	2026-10-17T20:26:43.6252820Z npm warn deprecated boolean@3.2.0: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+Electron（windows-latest）	打包安装程序	2026-10-17T20:27:14.2663248Z   • electron-builder  version=26.15.3 os=10.0.26100
+Electron（windows-latest）	打包安装程序	2026-10-17T20:27:14.2687205Z   • loaded configuration  file=package.json ("build" field)
+Electron（windows-latest）	打包安装程序	2026-10-17T20:27:14.6335463Z   • packageManager not detected by file, falling back to environment detection  resolvedPackageManager=npm detected=D:\a\ZhuopuERW\ZhuopuERW\desktop\electron
+Electron（windows-latest）	打包安装程序	2026-10-17T20:27:14.8211331Z   ⨯ Electron version "^33.4.11" is a range, not a fixed version. electron-builder requires an exact version because it downloads platform-specific binaries for a specific release — a range cannot be resolved without electron installed in node_modules. Pin the version in package.json (e.g. "15.3.0" instead of "^15.3.0") or set "electronVersion" explicitly in your electron-builder config.  version=^33.4.11
+Electron（windows-latest）	打包安装程序	2026-10-17T20:27:14.8212408Z   ⨯ Cannot compute electron version from installed node modules - version ("^33.4.11") is not fixed in project.
+Electron（windows-latest）	打包安装程序	2026-10-17T20:27:14.8212901Z See https://github.com/electron-userland/electron-builder/issues/3984#issuecomment-504968246
+Electron（windows-latest）	打包安装程序	2026-10-17T20:27:14.8624436Z ##[error]Process completed with exit code 1.
+Tauri（ubuntu-latest）	打包	﻿2026-10-17T20:30:13.1290907Z ##[group]Run cargo tauri build
+Tauri（ubuntu-latest）	打包	2026-10-17T20:30:13.1291111Z ^[[36;1mcargo tauri build^[[0m
+Tauri（ubuntu-latest）	打包	2026-10-17T20:30:13.1345344Z shell: /usr/bin/bash -e {0}
+Tauri（ubuntu-latest）	打包	2026-10-17T20:30:13.1345509Z env:
+Tauri（ubuntu-latest）	打包	2026-10-17T20:30:13.1345655Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+Tauri（ubuntu-latest）	打包	2026-10-17T20:30:13.1345841Z   CARGO_HOME: /home/runner/.cargo
+Tauri（ubuntu-latest）	打包	2026-10-17T20:30:13.1345981Z   CARGO_INCREMENTAL: 0
+Tauri（ubuntu-latest）	打包	2026-10-17T20:30:13.1346103Z   CARGO_TERM_COLOR: always
+Tauri（ubuntu-latest）	打包	2026-10-17T20:30:13.1346233Z   CACHE_ON_FAILURE: false
+Tauri（ubuntu-latest）	打包	2026-10-17T20:30:13.1346362Z ##[endgroup]
+Tauri（ubuntu-latest）	打包	2026-10-17T20:30:14.1807879Z         Info Looking up installed tauri packages to check mismatched versions...
+Tauri（ubuntu-latest）	打包	2026-10-17T20:30:14.3626456Z        Error Unable to find your web assets, did you forget to build your web app? Your frontendDist is set to "../../web/dist" (which is `/home/runner/work/ZhuopuERW/ZhuopuERW/desktop/tauri/src-tauri/../../web/dist`).
+Tauri（ubuntu-latest）	打包	2026-10-17T20:30:14.3639859Z ##[error]Process completed with exit code 1.
+Electron（ubuntu-latest）	打包安装程序	﻿2026-10-17T20:25:48.3482671Z ##[group]Run if [ "$RUNNER_OS" = "Windows" ]; then
+Electron（ubuntu-latest）	打包安装程序	2026-10-17T20:25:48.3483034Z ^[[36;1mif [ "$RUNNER_OS" = "Windows" ]; then^[[0m
+Electron（ubuntu-latest）	打包安装程序	2026-10-17T20:25:48.3483352Z ^[[36;1m  npx electron-builder --win --x64 --publish never^[[0m
+Electron（ubuntu-latest）	打包安装程序	2026-10-17T20:25:48.3483626Z ^[[36;1melse^[[0m
+Electron（ubuntu-latest）	打包安装程序	2026-10-17T20:25:48.3483866Z ^[[36;1m  npx electron-builder --linux AppImage --publish never^[[0m
+Electron（ubuntu-latest）	打包安装程序	2026-10-17T20:25:48.3484178Z ^[[36;1mfi^[[0m
+Electron（ubuntu-latest）	打包安装程序	2026-10-17T20:25:48.3541179Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Electron（ubuntu-latest）	打包安装程序	2026-10-17T20:25:48.3541368Z env:
+Electron（ubuntu-latest）	打包安装程序	2026-10-17T20:25:48.3541505Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+Electron（ubuntu-latest）	打包安装程序	2026-10-17T20:25:48.3542999Z   GH_TOKEN: ***
+Electron（ubuntu-latest）	打包安装程序	2026-10-17T20:25:48.3543114Z ##[endgroup]
+Electron（ubuntu-latest）	打包安装程序	2026-10-17T20:25:48.6791759Z npm warn exec The following package was not found and will be installed: electron-builder@26.15.3
+Electron（ubuntu-latest）	打包安装程序	2026-10-17T20:25:51.8365225Z npm warn deprecated rimraf@2.6.3: Rimraf versions prior to v4 are no longer supported
+Electron（ubuntu-latest）	打包安装程序	2026-10-17T20:25:51.9883234Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+Electron（ubuntu-latest）	打包安装程序	2026-10-17T20:25:52.1338303Z npm warn deprecated boolean@3.2.0: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+Electron（ubuntu-latest）	打包安装程序	2026-10-17T20:25:52.1635594Z npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+Electron（ubuntu-latest）	打包安装程序	2026-10-17T20:25:53.6046282Z   • electron-builder  version=26.15.3 os=6.17.0-1022-azure
+Electron（ubuntu-latest）	打包安装程序	2026-10-17T20:25:53.6067045Z   • loaded configuration  file=package.json ("build" field)
+Electron（ubuntu-latest）	打包安装程序	2026-10-17T20:25:53.9524695Z   • packageManager not detected by file, falling back to environment detection  resolvedPackageManager=npm detected=/home/runner/work/ZhuopuERW/ZhuopuERW/desktop/electron
+Electron（ubuntu-latest）	打包安装程序	2026-10-17T20:25:54.0225093Z   ⨯ Electron version "^33.4.11" is a range, not a fixed version. electron-builder requires an exact version because it downloads platform-specific binaries for a specific release — a range cannot be resolved without electron installed in node_modules. Pin the version in package.json (e.g. "15.3.0" instead of "^15.3.0") or set "electronVersion" explicitly in your electron-builder config.  version=^33.4.11
+Electron（ubuntu-latest）	打包安装程序	2026-10-17T20:25:54.0226659Z   ⨯ Cannot compute electron version from installed node modules - version ("^33.4.11") is not fixed in project.
+Electron（ubuntu-latest）	打包安装程序	2026-10-17T20:25:54.0227097Z See https://github.com/electron-userland/electron-builder/issues/3984#issuecomment-504968246
+Electron（ubuntu-latest）	打包安装程序	2026-10-17T20:25:54.0706836Z ##[error]Process completed with exit code 1.
+Tauri（windows-latest）	打包	﻿2026-10-17T20:35:06.9273189Z ##[group]Run cargo tauri build
+Tauri（windows-latest）	打包	2026-10-17T20:35:06.9273658Z ^[[36;1mcargo tauri build^[[0m
+Tauri（windows-latest）	打包	2026-10-17T20:35:06.9352351Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+Tauri（windows-latest）	打包	2026-10-17T20:35:06.9352662Z env:
+Tauri（windows-latest）	打包	2026-10-17T20:35:06.9352896Z   PNPM_HOME: C:\Users\runneradmin\setup-pnpm\node_modules\.bin
+Tauri（windows-latest）	打包	2026-10-17T20:35:06.9353180Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+Tauri（windows-latest）	打包	2026-10-17T20:35:06.9353401Z   CARGO_INCREMENTAL: 0
+Tauri（windows-latest）	打包	2026-10-17T20:35:06.9353582Z   CARGO_TERM_COLOR: always
+Tauri（windows-latest）	打包	2026-10-17T20:35:06.9353778Z   CACHE_ON_FAILURE: false
+Tauri（windows-latest）	打包	2026-10-17T20:35:06.9353979Z ##[endgroup]
+Tauri（windows-latest）	打包	2026-10-17T20:35:08.3555401Z         Info Looking up installed tauri packages to check mismatched versions...
+Tauri（windows-latest）	打包	2026-10-17T20:35:09.8353244Z        Error Unable to find your web assets, did you forget to build your web app? Your frontendDist is set to "../../web/dist" (which is `D:\a\ZhuopuERW\ZhuopuERW\desktop\tauri\src-tauri\../../web/dist`).
+Tauri（windows-latest）	打包	2026-10-17T20:35:09.9553596Z ##[error]Process completed with exit code 1.

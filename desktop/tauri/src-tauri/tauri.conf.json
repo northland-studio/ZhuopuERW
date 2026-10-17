@@ -5,7 +5,7 @@
   "build": {
     "beforeDevCommand": "",
     "beforeBuildCommand": "",
-    "frontendDist": "../../web/dist"
+    "frontendDist": "../../../web/dist"
   },
   "app": {
     "windows": [
@@ -32,8 +32,19 @@
   },
   "bundle": {
     "active": true,
-    "targets": ["msi", "nsis", "app", "dmg", "appimage"],
-    "icon": ["icons/icon.png"],
-    "resources": ["../../web/public/fonts/*", "../../web/public/brand/*"]
+    "targets": [
+      "msi",
+      "nsis",
+      "app",
+      "dmg",
+      "appimage"
+    ],
+    "icon": [
+      "icons/icon.png"
+    ],
+    "resources": [
+      "../../web/public/fonts/*",
+      "../../web/public/brand/*"
+    ]
   }
 }
