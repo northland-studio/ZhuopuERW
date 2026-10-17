@@ -1,0 +1,233 @@
+.nav {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    height: var(--nav-h);
+    background: var(--brand);
+    color: #fff;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+    animation: nav-drop 0.42s var(--ease-out) both;
+}
+
+@keyframes nav-drop {
+    from { transform: translateY(-8px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.nav-inner {
+    max-width: var(--page-max);
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.brand-lockup {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+    min-width: 0;
+}
+
+.brand-name {
+    font-size: 15px;
+    font-weight: 650;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+
+.brand-en {
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.72;
+    white-space: nowrap;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.nav-link {
+    position: relative;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 14.5px;
+    font-weight: 560;
+    letter-spacing: 0.03em;
+    color: rgba(255, 255, 255, 0.88);
+    transition: background-color 0.18s var(--ease-out), color 0.18s var(--ease-out);
+    white-space: nowrap;
+}
+
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+}
+
+.nav-link.is-active {
+    background: rgba(255, 255, 255, 0.18);
+    color: #fff;
+}
+
+.nav-user {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.nav-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0;
+    color: #fff;
+}
+
+.nav-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 208px;
+    padding: 8px;
+    border-radius: var(--radius-md);
+    background: #fff;
+    color: var(--ink-800);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--ink-100);
+    animation: menu-in 0.18s var(--ease-out) both;
+}
+
+@keyframes menu-in {
+    from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+    to { opacity: 1; transform: none; }
+}
+
+.nav-menu-head {
+    padding: 8px 12px 10px;
+    border-bottom: 1px solid var(--ink-100);
+    margin-bottom: 6px;
+}
+
+.nav-menu-name {
+    font-size: 14px;
+    font-weight: 650;
+}
+
+.nav-menu-mail {
+    font-size: 12px;
+    color: var(--ink-500);
+    word-break: break-all;
+}
+
+.nav-menu-item {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    color: var(--ink-700);
+    text-align: left;
+    transition: background-color 0.14s var(--ease-out);
+}
+
+.nav-menu-item:hover {
+    background: var(--ink-50);
+}
+
+.nav-menu-item.is-danger {
+    color: var(--danger);
+}
+
+.nav-burger {
+    display: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+@media (max-width: 860px) {
+    .brand-en {
+        display: none;
+    }
+
+    .nav-link {
+        padding: 8px 10px;
+        font-size: 13.5px;
+    }
+}
+
+@media (max-width: 640px) {
+    :root {
+        --nav-h: 58px;
+    }
+
+    .nav-inner {
+        padding: 0 14px;
+    }
+
+    .brand-name {
+        font-size: 13.5px;
+        letter-spacing: 0.02em;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .nav-burger {
+        display: inline-flex;
+    }
+
+    .nav-sheet {
+        position: fixed;
+        inset: var(--nav-h) 0 auto 0;
+        background: var(--brand);
+        padding: 10px 14px 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        box-shadow: var(--shadow-md);
+        animation: menu-in 0.2s var(--ease-out) both;
+        z-index: 39;
+    }
+
+    .nav-sheet .nav-link {
+        font-size: 15px;
+        padding: 12px 10px;
+    }
+}
+
+.page-shell {
+    min-height: calc(100vh - var(--nav-h));
+}

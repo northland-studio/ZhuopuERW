@@ -1,0 +1,26 @@
+{
+  "name": "zhuopu-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5173",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --port 5180",
+    "typecheck": "tsc -b --noEmit",
+    "lint": "tsc -b --noEmit"
+  },
+  "dependencies": {
+    "framer-motion": "^12.23.24",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.9.4"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.1",
+    "@vitejs/plugin-react": "^5.0.4",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.9"
+  }
+}

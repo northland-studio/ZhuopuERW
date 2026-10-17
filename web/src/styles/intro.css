@@ -1,0 +1,194 @@
+.intro {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    overflow: hidden;
+    background: #070505;
+    transition: background-color 0.85s var(--ease-out);
+}
+
+.intro.is-brand {
+    background: var(--brand);
+}
+
+/* 首屏中央舞台：logo / 标语 / 边框都在这里定位 */
+.intro-stage {
+    position: absolute;
+    left: 50%;
+    top: 44%;
+    width: 0;
+    height: 0;
+}
+
+.intro-logo {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 132px;
+    height: 132px;
+    margin-left: -66px;
+    margin-top: -66px;
+    will-change: transform;
+}
+
+.intro-frame {
+    position: absolute;
+    inset: -14px;
+    width: calc(100% + 28px);
+    height: calc(100% + 28px);
+    pointer-events: none;
+}
+
+.intro-frame rect {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.92);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+}
+
+/* 标语：一开始是 logo 下方的一行，后来变成绕 logo 的圆环 */
+.intro-slogan {
+    position: absolute;
+    left: 0;
+    top: 96px;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 14px;
+    white-space: nowrap;
+    color: #fff;
+    font-family: var(--font-serif);
+    font-size: 26px;
+    letter-spacing: 0.18em;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.28);
+}
+
+.intro-char {
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #fff;
+    font-family: var(--font-serif);
+    font-size: 24px;
+    line-height: 1;
+    will-change: transform, opacity;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.3);
+}
+
+.intro-char-inline {
+    display: inline-block;
+    color: #fff;
+    font-family: var(--font-serif);
+}
+
+/* 收尾：红色主屏变成导航条 */
+.intro-bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: var(--brand);
+    transform-origin: top center;
+}
+
+.intro-nav {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: #fff;
+}
+
+.intro-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    overflow: hidden;
+}
+
+.intro-wordmark {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+    white-space: nowrap;
+}
+
+.intro-wordmark-cn {
+    font-size: 15px;
+    font-weight: 650;
+    letter-spacing: 0.04em;
+}
+
+.intro-wordmark-en {
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.72;
+}
+
+.intro-links {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    font-size: 14.5px;
+    font-weight: 560;
+    letter-spacing: 0.03em;
+}
+
+.intro-links span {
+    opacity: 0.95;
+}
+
+.intro-skip {
+    position: absolute;
+    right: 20px;
+    bottom: 22px;
+    z-index: 2;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 12.5px;
+    letter-spacing: 0.06em;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(6px);
+    transition: background-color 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
+}
+
+.intro-skip:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.7);
+}
+
+@media (max-width: 560px) {
+    .intro-logo {
+        width: 104px;
+        height: 104px;
+        margin-left: -52px;
+        margin-top: -52px;
+    }
+
+    .intro-slogan {
+        font-size: 20px;
+        gap: 8px;
+        top: 76px;
+    }
+
+    .intro-char {
+        font-size: 20px;
+    }
+
+    .intro-wordmark-en {
+        display: none;
+    }
+
+    .intro-links {
+        gap: 16px;
+        font-size: 13px;
+    }
+}
