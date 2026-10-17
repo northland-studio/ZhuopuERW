@@ -1,0 +1,39 @@
+{
+  "productName": "琢璞英语讲评工作台",
+  "version": "0.1.0",
+  "identifier": "top.xuanjian.zhuopu",
+  "build": {
+    "beforeDevCommand": "",
+    "beforeBuildCommand": "",
+    "frontendDist": "../../web/dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "琢璞英语讲评工作台",
+        "width": 1440,
+        "height": 900,
+        "minWidth": 1024,
+        "minHeight": 680,
+        "decorations": false,
+        "transparent": false,
+        "resizable": true,
+        "center": true,
+        "visible": true
+      }
+    ],
+    "security": {
+      "csp": null
+    },
+    "trayIcon": {
+      "iconPath": "icons/icon.png",
+      "iconAsTemplate": true
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["msi", "nsis", "app", "dmg", "appimage"],
+    "icon": ["icons/icon.png"],
+    "resources": ["../../web/public/fonts/*", "../../web/public/brand/*"]
+  }
+}

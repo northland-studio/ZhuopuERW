@@ -18,6 +18,8 @@
     "lint": "pnpm --filter zhuopu-server lint && pnpm --filter zhuopu-web lint",
     "test": "pnpm --filter zhuopu-server test",
     "migrate": "pnpm --filter zhuopu-server migrate",
-    "postinstall": "node scripts/ensure-native.mjs"
+    "postinstall": "node scripts/ensure-native.mjs",
+    "web:dist:copy": "node scripts/copy-web-dist.mjs",
+    "desktop:electron": "pnpm --filter zhuopu-web build && node scripts/copy-web-dist.mjs && cd desktop/electron && pnpm install && pnpm start"
   }
 }

@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { LogoMark } from './Logo';
 import { useAuth } from '../lib/auth';
+import { DesktopTitleBar } from './DesktopTitleBar';
+import { hasDesktop, desktop } from '../lib/desktop';
 import '../styles/layout.css';
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -22,8 +24,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
     const initial = (user?.username || user?.email || 'Z').slice(0, 1).toUpperCase();
 
+    useEffect(() => {
+        if (!hasDesktop()) return;
+        document.body.classList.add('is-desktop');
+        const platform = desktop()?.platform || '';
+        if (platform === 'darwin') document.body.classList.add('is-mac');
+    }, []);
+
     return (
         <>
+            <DesktopTitleBar />
             <header className="nav">
                 <div className="nav-inner">
                     <Link to="/" className="nav-left" aria-label="返回首页">

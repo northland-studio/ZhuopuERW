@@ -8,6 +8,18 @@
     <meta name="description" content="琢璞英语讲评工作台：面向高中英语教师的试卷讲评工作台，支持完形填空、阅读理解、七选五、语法填空的 AI 讲评。" />
     <link rel="icon" href="/brand/logo.png" type="image/png" />
     <link rel="preload" href="/fonts/CrimsonText-Regular.ttf" as="font" type="font/ttf" crossorigin />
+    <script id="zhuopu-desktop-guard">
+        // 桌面客户端里禁用右键菜单与开发者工具快捷键（浏览器端不生效）
+        if (window.zhuopuDesktop) {
+            document.addEventListener('contextmenu', (e) => e.preventDefault());
+            document.addEventListener('keydown', (e) => {
+                const k = (e.key || '').toLowerCase();
+                if (k === 'f12' || (e.ctrlKey && e.shiftKey && ['i', 'j', 'c'].includes(k)) || (e.ctrlKey && k === 'u')) {
+                    e.preventDefault();
+                }
+            });
+        }
+    </script>
 </head>
 <body>
     <div id="root"></div>

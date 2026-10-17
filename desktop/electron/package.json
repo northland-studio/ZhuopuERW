@@ -1,0 +1,49 @@
+{
+  "name": "zhuopu-desktop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "琢璞英语讲评工作台 · 桌面端（Electron 主力客户端）",
+  "author": "北域工作室 Northland Studio",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "pack:win": "electron-builder --win --x64",
+    "pack:mac": "electron-builder --mac",
+    "pack:linux": "electron-builder --linux"
+  },
+  "devDependencies": {
+    "electron": "^33.4.11",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "top.xuanjian.zhuopu",
+    "productName": "琢璞英语讲评工作台",
+    "files": [
+      "electron/**",
+      "web-dist/**"
+    ],
+    "extraResources": [
+      {
+        "from": "../web/dist",
+        "to": "web-dist"
+      }
+    ],
+    "win": {
+      "target": ["nsis"],
+      "icon": "../web/public/brand/logo.png"
+    },
+    "mac": {
+      "target": ["dmg"],
+      "icon": "../web/public/brand/logo.png"
+    },
+    "linux": {
+      "target": ["AppImage"],
+      "icon": "../web/public/brand/logo.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
+    }
+  }
+}

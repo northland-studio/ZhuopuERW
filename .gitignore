@@ -30,3 +30,13 @@ release/
 *.exe
 *.AppImage
 *.msi
+
+desktop/electron/web-dist/
+desktop/electron/node_modules/
+desktop/tauri/src-tauri/target/
+
+# 部署临时产物与生产密钥（绝不入库）
+_deploy/
+_deploy.zip
+_deploy.tgz
+scripts/.env.production

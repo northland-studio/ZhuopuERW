@@ -1,0 +1,104 @@
+/* 桌面端自绘顶部操作栏（Electron / Tauri 窗口无边框时使用） */
+
+.tbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 0 8px 0 14px;
+    background: #ffffff;
+    border-bottom: 1px solid var(--ink-100);
+    z-index: 100;
+    user-select: none;
+}
+
+/* 拖拽区：覆盖整条，按钮区不拖拽 */
+.tbar-drag {
+    position: absolute;
+    inset: 0;
+    -webkit-app-region: drag;
+    app-region: drag;
+}
+
+.tbar-brand {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    pointer-events: none;
+}
+
+.tbar-logo {
+    border-radius: 4px;
+    flex: 0 0 auto;
+}
+
+.tbar-title {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink-600);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tbar-ver {
+    font-size: 11px;
+    color: var(--ink-400);
+    font-variant-numeric: tabular-nums;
+}
+
+.tbar-actions {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    -webkit-app-region: no-drag;
+    app-region: no-drag;
+}
+
+.tbar-btn {
+    width: 34px;
+    height: 26px;
+    display: grid;
+    place-items: center;
+    border-radius: 6px;
+    color: var(--ink-500);
+    transition: background-color 0.14s var(--ease-out), color 0.14s var(--ease-out);
+}
+
+.tbar-btn:hover {
+    background: var(--ink-50);
+    color: var(--ink-800);
+}
+
+.tbar-btn.is-close:hover {
+    background: #c62828;
+    color: #fff;
+}
+
+/* 桌面端：给顶部操作栏让出高度，导航栏不再是页面最顶部 */
+body.is-desktop .nav {
+    top: 38px;
+}
+
+body.is-desktop .rd-panel-head,
+body.is-desktop .intro {
+    top: 0;
+}
+
+body.is-desktop .page-shell {
+    padding-top: 38px;
+}
+
+/* macOS 上左侧留出红绿灯位置 */
+body.is-mac .tbar {
+    padding-left: 84px;
+}
