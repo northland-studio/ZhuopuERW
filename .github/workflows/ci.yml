@@ -14,10 +14,11 @@ jobs:
       - name: 检出代码
         uses: actions/checkout@v4
 
+      # pnpm 11 内部使用 node:sqlite，需要 Node 22.5+；这里统一用 Node 24
       - name: 安装 Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
 
       # 版本由 package.json 的 packageManager 字段决定，这里不要再写 version，
       # 否则会报 "Multiple versions of pnpm specified"
