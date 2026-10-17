@@ -54,6 +54,7 @@
 }
 
 .brand-en {
+    font-family: var(--font-reading);
     font-size: 9.5px;
     letter-spacing: 0.14em;
     text-transform: uppercase;

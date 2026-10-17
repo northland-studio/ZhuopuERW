@@ -420,7 +420,7 @@ function QuestionCard({
             <button className="rd-q-head" onClick={() => { onSelect(); setOpen((v) => !v); }}>
                 <span className="rd-q-num">{q.numberLabel || q.ordinal}</span>
                 <span style={{ flex: 1, minWidth: 0 }}>
-                    <span className="tiny" style={{ display: 'block', color: 'var(--ink-700)' }}>
+                    <span className="tiny rd-q-stem" style={{ display: 'block', color: 'var(--ink-700)' }}>
                         {q.stem ? q.stem.slice(0, 42) : TYPE_LABEL[q.type]}
                     </span>
                     <span className="rd-q-type">{TYPE_LABEL[q.type]}{q.analyzedAt ? ' · 已讲评' : ' · 待讲评'}</span>

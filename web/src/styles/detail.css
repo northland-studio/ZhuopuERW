@@ -441,3 +441,25 @@
     font-family: var(--font-reading);
     font-size: 14.5px;
 }
+
+/* 英文正文统一使用随包衬线体（题干、选项、原文、长难句、注释里的英文） */
+.brand-en,
+.rd-text,
+.rd-option,
+.rd-option-scroll,
+.rd-long-en,
+.rd-q-head .rd-q-stem,
+.rd-pop-word,
+.rd-vocab-chip,
+.share-question,
+.check-hint {
+    font-family: var(--font-reading);
+}
+
+/* 题干与选项里的英文行高略放大，接近讲义排版 */
+.rd-option {
+    line-height: 1.7;
+}
+.rd-option-scroll {
+    display: inline-block;
+}
