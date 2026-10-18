@@ -15,10 +15,22 @@ const http = require('node:http');
 const https = require('node:https');
 const { URL } = require('node:url');
 
+/**
+ * 主进程日志：写入 userData/main.log，同时尽量输出到 stdout。
+ * 启动它的终端关闭后 stdout 会 EPIPE，直接 console.log 会让主进程抛未捕获异常并弹错误框。
+ */
+const LOG_DIR = (() => { try { return app.getPath('userData'); } catch { return require('node:os').tmpdir(); } })();
+const LOG_FILE = require('node:path').join(LOG_DIR, 'main.log');
+function safeLog(...args) {
+    const line = args.map((a) => (typeof a === 'string' ? a : JSON.stringify(a))).join(' ');
+    try { fs.appendFileSync(LOG_FILE, new Date().toISOString() + ' ' + line + '\n'); } catch { /* 忽略 */ }
+    try { process.stdout.write(line + '\n'); } catch { /* EPIPE 忽略 */ }
+}
+
 const isDev = !app.isPackaged;
 const DEV_URL = process.env.ZHUOPU_DEV_URL || 'http://127.0.0.1:5173';
 /** 本地开发时也可以直接跑构建产物（不启 Vite）：ZHUOPU_DEV_STATIC=1 */
-const loadMode = process.env.ZHUOPU_LOAD || (process.env.ZHUOPU_DEV_STATIC === '1' ? 'static' : (isDev ? 'dev' : 'remote'));
+const loadMode = process.env.ZHUOPU_LOAD || 'static';
 const API_ORIGIN = process.env.ZHUOPU_API_ORIGIN || 'https://zhuopu.xuanjian.top';
 
 const WEB_DIST = app.isPackaged
@@ -141,7 +153,7 @@ function startLocalServer() {
         });
         localServer.listen(0, '127.0.0.1', () => {
             localPort = localServer.address().port;
-            console.log(`[本地服务] http://127.0.0.1:${localPort}/  静态目录 ${WEB_DIST}`);
+            safeLog(`[本地服务] http://127.0.0.1:${localPort}/  静态目录 ${WEB_DIST}`);
             resolve(localPort);
         });
     });
@@ -173,20 +185,25 @@ function createWindow() {
 
     mainWindow.once('ready-to-show', () => mainWindow.show());
 
-    if (isDev) mainWindow.loadURL(DEV_URL);
+    // 这是白屏的真正原因：之前这里只判断 isDev，未打包时永远去连 Vite(5173)，
+    // 而 5173 没起 → 页面什么都没加载 → 白屏。现在按 loadMode 三选一。
+    if (loadMode === 'dev') mainWindow.loadURL(DEV_URL);
+    else if (loadMode === 'remote') mainWindow.loadURL(API_ORIGIN + '/');
     else mainWindow.loadURL(`http://127.0.0.1:${localPort}/`);
 
     mainWindow.webContents.on('console-message', (_e, level, message, line, sourceId) => {
-        console.log('[渲染]', level, message, sourceId ? sourceId.split('/').pop() + ':' + line : '');
+        // 注意：启动它的终端/管道关闭后 console.log 会抛 EPIPE，
+        // 这个回调运行在主进程里，未捕获就会弹出「A JavaScript error occurred in the main process」。
+        safeLog('[渲染]', level, message, sourceId ? sourceId.split('/').pop() + ':' + line : '');
     });
     mainWindow.webContents.on('preload-error', (_e, preloadPath, error) => {
-        console.error('[preload 错误]', preloadPath, error && error.message);
+        safeLog('[preload 错误]', preloadPath, error && error.message);
     });
     mainWindow.webContents.on('render-process-gone', (_e, details) => {
-        console.error('[渲染进程崩溃]', JSON.stringify(details));
+        safeLog('[渲染进程崩溃]', JSON.stringify(details));
     });
     mainWindow.webContents.on('did-fail-load', (_e, code, desc, url) => {
-        console.error(`[加载失败] ${code} ${desc} ${url}`);
+        safeLog(`[加载失败] ${code} ${desc} ${url}`);
     });
 
     mainWindow.webContents.on('before-input-event', (event, input) => {
@@ -294,6 +311,14 @@ ipcMain.handle('file:pick', async () => {
 });
 
 /* ---------------- 生命周期 ---------------- */
+
+process.on('uncaughtException', (e) => {
+    if (e && e.code === 'EPIPE') return;
+    safeLog('[未捕获异常]', (e && e.stack) || e);
+});
+process.on('unhandledRejection', (e) => {
+    safeLog('[未处理 Promise]', (e && e.message) || e);
+});
 
 const gotLock = app.requestSingleInstanceLock();
 if (!gotLock) {

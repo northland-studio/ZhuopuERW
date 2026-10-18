@@ -214,6 +214,32 @@ reviewsRouter.post('/:id/apply', (req, res) => {
 
     const { passages, questions, mode } = parsed.data;
     const passageIds = mode === 'replace' ? replacePassages(review.id, passages) : [...review.passages.map((p) => p.id)];
+
+    // 第一次解析就写入词汇与长难句（不需要逐题 AI 讲评）
+    passages.forEach((p, i) => {
+        const id = passageIds[i];
+        if (id == null) return;
+        const vocab = (p as { vocabulary?: unknown[] }).vocabulary ?? [];
+        const longs = (p as { longSentences?: unknown[] }).longSentences ?? [];
+        if (vocab.length || longs.length) {
+            savePassageMeta(id, { vocabulary: vocab, longSentences: longs });
+        }
+    });
+    // 汇总到整份讲评，讲评页左侧立刻能画出虚线下划线
+    const vocabAll: unknown[] = [];
+    const longAll: unknown[] = [];
+    passages.forEach((p) => {
+        vocabAll.push(...((p as { vocabulary?: unknown[] }).vocabulary ?? []));
+        longAll.push(...((p as { longSentences?: unknown[] }).longSentences ?? []));
+    });
+    if (vocabAll.length || longAll.length) {
+        const current = getReview(req.user!.id, review.id);
+        saveReviewSummary(review.id, {
+            summary: current?.summary ?? '',
+            vocab: vocabAll,
+            longSentences: longAll
+        });
+    }
     if (mode === 'append') return res.status(400).json({ error: '当前版本仅支持覆盖写入' });
 
     const ids = appendQuestions(

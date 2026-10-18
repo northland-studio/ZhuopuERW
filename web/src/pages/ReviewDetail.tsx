@@ -198,7 +198,14 @@ export default function ReviewDetail() {
             <section className="rd-panel">
                 <div className="rd-panel-head">
                     <span>阅读原文</span>
-                    {current?.sourceStart != null && <span className="tag tag-brand">已定位第 {current.numberLabel} 题</span>}
+                    <span className="row" style={{ gap: 8 }}>
+                        {current?.sourceStart != null && <span className="tag tag-brand">已定位第 {current.numberLabel} 题</span>}
+                        {collectVocab(review).length > 0 ? (
+                            <span className="tag">{collectVocab(review).length} 个重点词（虚线下划线可点）</span>
+                        ) : (
+                            <span className="tag tag-warn">尚未 AI 讲评，暂无重点词汇</span>
+                        )}
+                    </span>
                 </div>
                 {review.passages.length > 1 && (
                     <div className="rd-passage-tabs">
@@ -278,6 +285,16 @@ function collectVocab(review: Review): VocabItem[] {
         for (const v of q.analysis?.vocabulary ?? []) {
             const key = v.word.toLowerCase();
             if (!map.has(key) && v.word.length > 1) map.set(key, v);
+        }
+    }
+    // 第一次解析就把词汇存进了 passages.meta，这里一并收进来
+    type PassageMeta = { vocabulary?: VocabItem[]; longSentences?: LongSentence[] };
+    for (const p of review.passages) {
+        const meta = (p as { meta?: PassageMeta }).meta;
+        for (const v of meta?.vocabulary ?? []) {
+            if (!v?.word) continue;
+            const key = String(v.word).toLowerCase();
+            if (!map.has(key) && String(v.word).length > 1) map.set(key, v);
         }
     }
     for (const v of review.vocab ?? []) {

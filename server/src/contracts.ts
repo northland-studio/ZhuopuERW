@@ -39,7 +39,11 @@ export const splitQuestionSchema = z.object({
 export const splitPassageSchema = z.object({
     label: z.string().default(''),
     /** 原文正文，保留原有换行与空位标记 */
-    content: z.string().default('')
+    content: z.string().default(''),
+    /** 第一次解析就返回本篇的重点词汇（无需逐题讲评） */
+    vocabulary: z.array(z.any()).default([]),
+    /** 第一次解析就返回本篇的长难句 */
+    longSentences: z.array(z.any()).default([])
 });
 
 export const splitResultSchema = z.object({

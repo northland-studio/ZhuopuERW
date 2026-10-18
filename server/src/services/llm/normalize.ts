@@ -149,7 +149,11 @@ export function normalizeSplit(data: unknown): Any {
         const po = p as Any;
         return {
             label: str(pick(po, ['label', 'name', 'title'])) || `P${i + 1}`,
-            content: str(pick(po, ['content', 'text', 'body', '原文']))
+            content: str(pick(po, ['content', 'text', 'body', '原文'])),
+            vocabulary: list(pick(po, ['vocabulary', 'vocab', 'words', 'key_words']))
+                .map(normalizeVocab).filter(Boolean),
+            longSentences: list(pick(po, ['longSentences', 'long_sentences', 'sentences']))
+                .map(normalizeLongSentence).filter(Boolean)
         };
     }).filter((p) => p.content);
 

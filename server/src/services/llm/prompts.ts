@@ -17,11 +17,13 @@ export function buildSplitPrompt(text: string, hint?: { type?: QuestionType; ext
         '   - answer：能确定就给答案（完形填空给字母，七选五给字母，语法填空给填写的词，阅读题给字母或文字）；不能确定留空字符串。',
         '   - sourceQuote：从对应原文里逐字摘出的、能定位该题的片段（完形填空取含该空的一句；阅读题取支撑答案的原句；七选五取空所在处上下文）。',
         '5. 看不清、缺题、排版混乱的地方写在 notes 里，交给老师校正；不要臆造题目。',
+        '6. 每篇原文都要给出 vocabulary（8~15 个高中重难点词汇：word 英文原词 / pos 词性缩写 / meanings 中文义项数组 / usage 搭配 / context 原文片段）与 longSentences（2~5 个长难句：sentence 逐字原文 / analysis 结构拆解 / translation 中文翻译）。',
+        '   这两项与题目无关，是整篇的语言点汇总，必须随切分一起返回。',
         '',
         JSON_RULE,
         '',
         '输出结构：',
-        '{"passages":[{"label":"P1 完形填空","content":"..."}],"questions":[{"passageIndex":1,"type":"cloze","numberLabel":"41","stem":"","options":[{"label":"A","text":"ordering"}],"answer":"A","sourceQuote":"..."}],"notes":""}'
+        '{"passages":[{"label":"P1 完形填空","content":"...","vocabulary":[{"word":"heritage","pos":"n.","meanings":["遗产"],"usage":"cultural heritage","context":"her Italian heritage"}],"longSentences":[{"sentence":"原文长句","analysis":"结构拆解","translation":"中文翻译"}]}],"questions":[{"passageIndex":1,"type":"cloze","numberLabel":"41","stem":"","options":[{"label":"A","text":"ordering"}],"answer":"A","sourceQuote":"..."}],"notes":""}'
     ].join('\n');
 
     const user = [

@@ -47,7 +47,11 @@ export async function splitWorksheet(
     if (!parsed.success) {
         reportInvalid('切分', parsed.error.issues);
         // 兜底：把原文整段当作单篇，题目留空，交给老师手动补充
-        const fallback: SplitResult = { passages: [{ label: 'P1', content: text }], questions: [], notes: '模型返回结构不完整，已保留原文，请手动补充题目。' };
+        const fallback: SplitResult = {
+            passages: [{ label: 'P1', content: text, vocabulary: [], longSentences: [] }],
+            questions: [],
+            notes: '模型返回结构不完整，已保留原文，请手动补充题目。'
+        };
         return { result: fallback, usage: r.usage, model: r.model };
     }
     return { result: parsed.data, usage: r.usage, model: r.model };
