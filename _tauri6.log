@@ -1,0 +1,460 @@
+﻿Tauri（windows-latest）	打包	﻿2026-10-18T04:38:10.4673005Z ##[group]Run cargo tauri build
+Tauri（windows-latest）	打包	2026-10-18T04:38:10.4673354Z ^[[36;1mcargo tauri build^[[0m
+Tauri（windows-latest）	打包	2026-10-18T04:38:10.4749566Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+Tauri（windows-latest）	打包	2026-10-18T04:38:10.4749861Z env:
+Tauri（windows-latest）	打包	2026-10-18T04:38:10.4750087Z   PNPM_HOME: C:\Users\runneradmin\setup-pnpm\node_modules\.bin
+Tauri（windows-latest）	打包	2026-10-18T04:38:10.4750363Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+Tauri（windows-latest）	打包	2026-10-18T04:38:10.4750599Z   CARGO_INCREMENTAL: 0
+Tauri（windows-latest）	打包	2026-10-18T04:38:10.4750777Z   CARGO_TERM_COLOR: always
+Tauri（windows-latest）	打包	2026-10-18T04:38:10.4750957Z   CACHE_ON_FAILURE: false
+Tauri（windows-latest）	打包	2026-10-18T04:38:10.4751133Z ##[endgroup]
+Tauri（windows-latest）	打包	2026-10-18T04:38:12.0694644Z         Info Looking up installed tauri packages to check mismatched versions...
+Tauri（windows-latest）	打包	2026-10-18T04:38:12.7750824Z ^[[1m^[[92m    Updating^[[0m crates.io index
+Tauri（windows-latest）	打包	2026-10-18T04:38:13.5296173Z ^[[1m^[[92m     Locking^[[0m 462 packages to highest compatible versions
+Tauri（windows-latest）	打包	2026-10-18T04:38:13.5338820Z ^[[1m^[[92m      Adding^[[0m brotli-decompressor v6.0.1 ^[[1m^[[93m(available: v6.1.0)^[[0m
+Tauri（windows-latest）	打包	2026-10-18T04:38:13.5503311Z ^[[1m^[[92m      Adding^[[0m generic-array v0.14.7 ^[[1m^[[93m(available: v0.14.9)^[[0m
+Tauri（windows-latest）	打包	2026-10-18T04:38:13.6579931Z ^[[1m^[[92m      Adding^[[0m toml v0.8.2 ^[[1m^[[93m(available: v0.8.23)^[[0m
+Tauri（windows-latest）	打包	2026-10-18T04:38:13.6583638Z ^[[1m^[[92m      Adding^[[0m toml_datetime v0.6.3 ^[[1m^[[93m(available: v0.6.11)^[[0m
+Tauri（windows-latest）	打包	2026-10-18T04:38:13.6600038Z ^[[1m^[[92m      Adding^[[0m toml_edit v0.20.2 ^[[1m^[[93m(available: v0.20.7)^[[0m
+Tauri（windows-latest）	打包	2026-10-18T04:38:13.7268655Z ^[[1m^[[92m Downloading^[[0m crates ...
+Tauri（windows-latest）	打包	2026-10-18T04:38:13.8019452Z ^[[1m^[[92m  Downloaded^[[0m siphasher v1.0.4
+Tauri（windows-latest）	打包	2026-10-18T04:38:13.8138307Z ^[[1m^[[92m  Downloaded^[[0m adler2 v2.0.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:13.8235048Z ^[[1m^[[92m  Downloaded^[[0m serde_spanned v1.1.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:13.8310714Z ^[[1m^[[92m  Downloaded^[[0m serde_repr v0.1.21
+Tauri（windows-latest）	打包	2026-10-18T04:38:13.8497071Z ^[[1m^[[92m  Downloaded^[[0m serde-untagged v0.1.9
+Tauri（windows-latest）	打包	2026-10-18T04:38:13.8631031Z ^[[1m^[[92m  Downloaded^[[0m shlex v2.0.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:13.8731397Z ^[[1m^[[92m  Downloaded^[[0m tinystr v0.8.4
+Tauri（windows-latest）	打包	2026-10-18T04:38:13.8893978Z ^[[1m^[[92m  Downloaded^[[0m softbuffer v0.4.8
+Tauri（windows-latest）	打包	2026-10-18T04:38:13.9162195Z ^[[1m^[[92m  Downloaded^[[0m schemars v1.2.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.0551238Z ^[[1m^[[92m  Downloaded^[[0m serde_core v1.0.229
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.0726800Z ^[[1m^[[92m  Downloaded^[[0m serde_derive v1.0.229
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.0950522Z ^[[1m^[[92m  Downloaded^[[0m serde_with_macros v3.24.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.1068072Z ^[[1m^[[92m  Downloaded^[[0m sha2 v0.10.9
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.1289938Z ^[[1m^[[92m  Downloaded^[[0m tauri-plugin-fs v2.7.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.1835078Z ^[[1m^[[92m  Downloaded^[[0m serde v1.0.229
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.2033321Z ^[[1m^[[92m  Downloaded^[[0m serde_json v1.0.154
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.4827242Z ^[[1m^[[92m  Downloaded^[[0m serde_with v3.24.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.5901544Z ^[[1m^[[92m  Downloaded^[[0m vswhom-sys v0.1.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.5993023Z ^[[1m^[[92m  Downloaded^[[0m webview2-com-macros v0.8.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.6050340Z ^[[1m^[[92m  Downloaded^[[0m windows-implement v0.60.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.6120241Z ^[[1m^[[92m  Downloaded^[[0m windows-targets v0.53.5
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.6183212Z ^[[1m^[[92m  Downloaded^[[0m yoke v0.8.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.6307304Z ^[[1m^[[92m  Downloaded^[[0m zerofrom v0.1.8
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.6372822Z ^[[1m^[[92m  Downloaded^[[0m tendril v0.5.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.6499665Z ^[[1m^[[92m  Downloaded^[[0m yoke-derive v0.8.4
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.6570848Z ^[[1m^[[92m  Downloaded^[[0m anyhow v1.0.104
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.6872885Z ^[[1m^[[92m  Downloaded^[[0m simd-adler32 v0.3.10
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.7033429Z ^[[1m^[[92m  Downloaded^[[0m smallvec v1.16.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.7113179Z ^[[1m^[[92m  Downloaded^[[0m uuid v1.28.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.7324956Z ^[[1m^[[92m  Downloaded^[[0m windows-numerics v0.3.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.7435672Z ^[[1m^[[92m  Downloaded^[[0m windows-version v0.1.7
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.7507197Z ^[[1m^[[92m  Downloaded^[[0m aho-corasick v1.1.5
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.7847065Z ^[[1m^[[92m  Downloaded^[[0m autocfg v1.5.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.7983005Z ^[[1m^[[92m  Downloaded^[[0m toml_datetime v1.1.2+spec-1.1.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.8070345Z ^[[1m^[[92m  Downloaded^[[0m vswhom v0.1.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.8160132Z ^[[1m^[[92m  Downloaded^[[0m windows-interface v0.59.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.8233520Z ^[[1m^[[92m  Downloaded^[[0m winnow v1.0.4
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.8954265Z ^[[1m^[[92m  Downloaded^[[0m windows-threading v0.2.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.9027233Z ^[[1m^[[92m  Downloaded^[[0m zerofrom-derive v0.1.8
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.9099135Z ^[[1m^[[92m  Downloaded^[[0m winreg v0.56.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.9331821Z ^[[1m^[[92m  Downloaded^[[0m cfg-if v1.0.5
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.9422605Z ^[[1m^[[92m  Downloaded^[[0m dyn-clone v1.0.20
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.9544608Z ^[[1m^[[92m  Downloaded^[[0m windows-core v0.62.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.9821290Z ^[[1m^[[92m  Downloaded^[[0m zerovec-derive v0.11.6
+Tauri（windows-latest）	打包	2026-10-18T04:38:14.9993856Z ^[[1m^[[92m  Downloaded^[[0m toml_parser v1.1.5+spec-1.1.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.0175434Z ^[[1m^[[92m  Downloaded^[[0m typeid v1.0.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.0273680Z ^[[1m^[[92m  Downloaded^[[0m windows-future v0.3.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.0396152Z ^[[1m^[[92m  Downloaded^[[0m zmij v1.0.23
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.0507192Z ^[[1m^[[92m  Downloaded^[[0m windows-collections v0.3.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.0594589Z ^[[1m^[[92m  Downloaded^[[0m jiff-tzdb-platform v0.1.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.0659517Z ^[[1m^[[92m  Downloaded^[[0m web_atoms v0.2.6
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.0736566Z ^[[1m^[[92m  Downloaded^[[0m static_vcruntime v3.0.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.0826867Z ^[[1m^[[92m  Downloaded^[[0m alloc-no-stdlib v3.0.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.0977827Z ^[[1m^[[92m  Downloaded^[[0m alloc-stdlib v0.3.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.1093917Z ^[[1m^[[92m  Downloaded^[[0m stable_deref_trait v1.2.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.1172540Z ^[[1m^[[92m  Downloaded^[[0m cargo-platform v0.1.9
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.1270906Z ^[[1m^[[92m  Downloaded^[[0m cpufeatures v0.2.17
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.1387040Z ^[[1m^[[92m  Downloaded^[[0m potential_utf v0.1.6
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.1471304Z ^[[1m^[[92m  Downloaded^[[0m powerfmt v0.2.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.1583452Z ^[[1m^[[92m  Downloaded^[[0m crypto-common v0.1.7
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.1659140Z ^[[1m^[[92m  Downloaded^[[0m idna_adapter v1.2.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.1734407Z ^[[1m^[[92m  Downloaded^[[0m winapi-util v0.1.11
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.1851336Z ^[[1m^[[92m  Downloaded^[[0m equivalent v1.0.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.1940676Z ^[[1m^[[92m  Downloaded^[[0m cssparser-macros v0.7.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.2002439Z ^[[1m^[[92m  Downloaded^[[0m synstructure v0.14.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.2080290Z ^[[1m^[[92m  Downloaded^[[0m dpi v0.1.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.2161380Z ^[[1m^[[92m  Downloaded^[[0m tauri-macros v2.7.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.2270527Z ^[[1m^[[92m  Downloaded^[[0m unicode-ident v1.0.27
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.2481559Z ^[[1m^[[92m  Downloaded^[[0m tauri-plugin v2.7.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.2563970Z ^[[1m^[[92m  Downloaded^[[0m tauri-winres v0.3.6
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.2709666Z ^[[1m^[[92m  Downloaded^[[0m toml_writer v1.1.3+spec-1.1.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.2802985Z ^[[1m^[[92m  Downloaded^[[0m dtoa v1.0.11
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.2913104Z ^[[1m^[[92m  Downloaded^[[0m pin-project-lite v0.2.17
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.3498294Z ^[[1m^[[92m  Downloaded^[[0m webview2-com v0.39.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.3580875Z ^[[1m^[[92m  Downloaded^[[0m deranged v0.5.9
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.3668962Z ^[[1m^[[92m  Downloaded^[[0m displaydoc v0.2.7
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.3848907Z ^[[1m^[[92m  Downloaded^[[0m quote v1.0.47
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.4092272Z ^[[1m^[[92m  Downloaded^[[0m rustc_version v0.4.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.4196287Z ^[[1m^[[92m  Downloaded^[[0m tracing-attributes v0.1.31
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.4430945Z ^[[1m^[[92m  Downloaded^[[0m cargo_metadata v0.19.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.4587281Z ^[[1m^[[92m  Downloaded^[[0m cargo_toml v1.0.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.4702960Z ^[[1m^[[92m  Downloaded^[[0m crossbeam-utils v0.8.23
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.5089126Z ^[[1m^[[92m  Downloaded^[[0m defmt v1.2.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.5651959Z ^[[1m^[[92m  Downloaded^[[0m embed-resource v3.0.12
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.5797771Z ^[[1m^[[92m  Downloaded^[[0m erased-serde v0.4.10
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.5992752Z ^[[1m^[[92m  Downloaded^[[0m fastrand v2.5.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.6091180Z ^[[1m^[[92m  Downloaded^[[0m lock_api v0.4.14
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.6177006Z ^[[1m^[[92m  Downloaded^[[0m miniz_oxide v0.8.9
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.6357066Z ^[[1m^[[92m  Downloaded^[[0m open v5.4.4
+Tauri（windows-latest）	打包	2026-10-18T04:38:15.6491151Z ^[[1m^[[92m  Downloaded^[[0m parking_lot v0.12.5
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.1021616Z ^[[1m^[[92m  Downloaded^[[0m parking_lot_core v0.9.12
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.1181637Z ^[[1m^[[92m  Downloaded^[[0m tauri-build v2.7.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.1284996Z ^[[1m^[[92m  Downloaded^[[0m tauri-codegen v2.7.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.1368041Z ^[[1m^[[92m  Downloaded^[[0m bitflags v2.13.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.1704122Z ^[[1m^[[92m  Downloaded^[[0m defmt-macros v1.2.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.2079763Z ^[[1m^[[92m  Downloaded^[[0m find-msvc-tools v0.1.14
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.2208288Z ^[[1m^[[92m  Downloaded^[[0m itoa v1.0.18
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.2304156Z ^[[1m^[[92m  Downloaded^[[0m jiff-tzdb v0.1.9
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.2397462Z ^[[1m^[[92m  Downloaded^[[0m litemap v0.8.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.2559796Z ^[[1m^[[92m  Downloaded^[[0m ref-cast v1.0.27
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.2803498Z ^[[1m^[[92m  Downloaded^[[0m ref-cast-impl v1.0.27
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.2861997Z ^[[1m^[[92m  Downloaded^[[0m rustc-hash v2.1.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.2946585Z ^[[1m^[[92m  Downloaded^[[0m socket2 v0.6.5
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.3032991Z ^[[1m^[[92m  Downloaded^[[0m tauri-plugin-opener v2.7.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.3307116Z ^[[1m^[[92m  Downloaded^[[0m tauri-runtime v2.12.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.3430762Z ^[[1m^[[92m  Downloaded^[[0m time-macros v0.2.32
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.3620638Z ^[[1m^[[92m  Downloaded^[[0m tinyvec v1.13.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.3848707Z ^[[1m^[[92m  Downloaded^[[0m toml v1.1.8+spec-1.1.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.4113900Z ^[[1m^[[92m  Downloaded^[[0m tray-icon v0.25.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.4267884Z ^[[1m^[[92m  Downloaded^[[0m writeable v0.6.4
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.4403139Z ^[[1m^[[92m  Downloaded^[[0m camino v1.2.6
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.4490186Z ^[[1m^[[92m  Downloaded^[[0m cookie v0.18.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.4646739Z ^[[1m^[[92m  Downloaded^[[0m crc32fast v1.5.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.4758117Z ^[[1m^[[92m  Downloaded^[[0m ctor v1.0.13
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.4968980Z ^[[1m^[[92m  Downloaded^[[0m defmt-parser v1.1.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.5037541Z ^[[1m^[[92m  Downloaded^[[0m icu_provider v2.3.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.5208993Z ^[[1m^[[92m  Downloaded^[[0m plist v1.10.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.5510463Z ^[[1m^[[92m  Downloaded^[[0m proc-macro2 v1.0.107
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.5725757Z ^[[1m^[[92m  Downloaded^[[0m raw-window-handle v0.6.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.5856560Z ^[[1m^[[92m  Downloaded^[[0m tauri-plugin-dialog v2.8.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.6235311Z ^[[1m^[[92m  Downloaded^[[0m tracing-core v0.1.36
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.6420505Z ^[[1m^[[92m  Downloaded^[[0m bytes v1.12.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.6671435Z ^[[1m^[[92m  Downloaded^[[0m darling v0.24.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.7282254Z ^[[1m^[[92m  Downloaded^[[0m derive_more v2.1.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.8372301Z ^[[1m^[[92m  Downloaded^[[0m icu_locale_core v2.3.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.8907995Z ^[[1m^[[92m  Downloaded^[[0m icu_normalizer_data v2.3.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.9025589Z ^[[1m^[[92m  Downloaded^[[0m miniz_oxide v0.9.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.9150510Z ^[[1m^[[92m  Downloaded^[[0m rfd v0.16.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.9506976Z ^[[1m^[[92m  Downloaded^[[0m tauri-runtime-wry v2.12.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.9647615Z ^[[1m^[[92m  Downloaded^[[0m typenum v1.20.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:16.9810042Z ^[[1m^[[92m  Downloaded^[[0m zerotrie v0.2.5
+Tauri（windows-latest）	打包	2026-10-18T04:38:17.0064515Z ^[[1m^[[92m  Downloaded^[[0m crossbeam-channel v0.5.17
+Tauri（windows-latest）	打包	2026-10-18T04:38:17.0340335Z ^[[1m^[[92m  Downloaded^[[0m darling_core v0.24.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:17.0819142Z ^[[1m^[[92m  Downloaded^[[0m darling_macro v0.24.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:17.0869060Z ^[[1m^[[92m  Downloaded^[[0m derive_more-impl v2.1.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:17.6189828Z ^[[1m^[[92m  Downloaded^[[0m flate2 v1.1.10
+Tauri（windows-latest）	打包	2026-10-18T04:38:17.6560868Z ^[[1m^[[92m  Downloaded^[[0m http v1.5.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:17.6770906Z ^[[1m^[[92m  Downloaded^[[0m icu_properties v2.3.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:17.6926633Z ^[[1m^[[92m  Downloaded^[[0m memchr v2.8.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:17.7273351Z ^[[1m^[[92m  Downloaded^[[0m unicode-segmentation v1.13.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:17.7435335Z ^[[1m^[[92m  Downloaded^[[0m zerovec v0.11.8
+Tauri（windows-latest）	打包	2026-10-18T04:38:17.7972903Z ^[[1m^[[92m  Downloaded^[[0m ico v0.5.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:17.8203963Z ^[[1m^[[92m  Downloaded^[[0m indexmap v2.14.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:17.8448783Z ^[[1m^[[92m  Downloaded^[[0m keyboard-types v0.8.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:17.8649032Z ^[[1m^[[92m  Downloaded^[[0m mio v1.2.4
+Tauri（windows-latest）	打包	2026-10-18T04:38:17.9070375Z ^[[1m^[[92m  Downloaded^[[0m cc v1.8.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:17.9305655Z ^[[1m^[[92m  Downloaded^[[0m muda v0.20.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:17.9638164Z ^[[1m^[[92m  Downloaded^[[0m icu_properties_data v2.3.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:18.0481081Z ^[[1m^[[92m  Downloaded^[[0m wry v0.57.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:18.0981568Z ^[[1m^[[92m  Downloaded^[[0m brotli-decompressor v6.0.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:18.1264380Z ^[[1m^[[92m  Downloaded^[[0m zlib-rs v0.6.8
+Tauri（windows-latest）	打包	2026-10-18T04:38:18.1636973Z ^[[1m^[[92m  Downloaded^[[0m icu_collections v2.3.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:18.2153464Z ^[[1m^[[92m  Downloaded^[[0m quick-xml v0.42.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:18.2463790Z ^[[1m^[[92m  Downloaded^[[0m time v0.3.55
+Tauri（windows-latest）	打包	2026-10-18T04:38:18.3820319Z ^[[1m^[[92m  Downloaded^[[0m chrono v0.4.45
+Tauri（windows-latest）	打包	2026-10-18T04:38:18.4161366Z ^[[1m^[[92m  Downloaded^[[0m tao v0.37.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:18.4910306Z ^[[1m^[[92m  Downloaded^[[0m tauri v2.12.4
+Tauri（windows-latest）	打包	2026-10-18T04:38:18.9705428Z ^[[1m^[[92m  Downloaded^[[0m syn v2.0.119
+Tauri（windows-latest）	打包	2026-10-18T04:38:19.0408239Z ^[[1m^[[92m  Downloaded^[[0m tracing v0.1.44
+Tauri（windows-latest）	打包	2026-10-18T04:38:19.1084242Z ^[[1m^[[92m  Downloaded^[[0m icu_normalizer v2.3.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:19.1409696Z ^[[1m^[[92m  Downloaded^[[0m brotli v9.0.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:19.2038621Z ^[[1m^[[92m  Downloaded^[[0m windows_x86_64_msvc v0.53.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:19.2219300Z ^[[1m^[[92m  Downloaded^[[0m libc v0.2.191
+Tauri（windows-latest）	打包	2026-10-18T04:38:19.5267477Z ^[[1m^[[92m  Downloaded^[[0m tokio v1.53.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:21.0387268Z ^[[1m^[[92m  Downloaded^[[0m window-vibrancy v0.8.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:21.0699112Z ^[[1m^[[92m  Downloaded^[[0m webview2-com-sys v0.39.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:21.1510781Z ^[[1m^[[92m  Downloaded^[[0m windows v0.62.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:23.6427672Z ^[[1m^[[92m   Compiling^[[0m proc-macro2 v1.0.107
+Tauri（windows-latest）	打包	2026-10-18T04:38:23.6428486Z ^[[1m^[[92m   Compiling^[[0m unicode-ident v1.0.27
+Tauri（windows-latest）	打包	2026-10-18T04:38:23.6429017Z ^[[1m^[[92m   Compiling^[[0m quote v1.0.47
+Tauri（windows-latest）	打包	2026-10-18T04:38:23.6438059Z ^[[1m^[[92m   Compiling^[[0m serde_core v1.0.229
+Tauri（windows-latest）	打包	2026-10-18T04:38:23.8055501Z ^[[1m^[[92m   Compiling^[[0m cfg-if v1.0.5
+Tauri（windows-latest）	打包	2026-10-18T04:38:23.9023319Z ^[[1m^[[92m   Compiling^[[0m siphasher v1.0.4
+Tauri（windows-latest）	打包	2026-10-18T04:38:24.0289183Z ^[[1m^[[92m   Compiling^[[0m fastrand v2.5.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:24.1397908Z ^[[1m^[[92m   Compiling^[[0m phf_shared v0.13.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:24.1737818Z ^[[1m^[[92m   Compiling^[[0m icu_properties_data v2.3.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:24.4579327Z ^[[1m^[[92m   Compiling^[[0m icu_normalizer_data v2.3.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:24.4684645Z ^[[1m^[[92m   Compiling^[[0m phf_generator v0.13.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:24.7002132Z ^[[1m^[[92m   Compiling^[[0m stable_deref_trait v1.2.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:24.7077102Z ^[[1m^[[92m   Compiling^[[0m thiserror v2.0.21
+Tauri（windows-latest）	打包	2026-10-18T04:38:24.8093432Z ^[[1m^[[92m   Compiling^[[0m zmij v1.0.23
+Tauri（windows-latest）	打包	2026-10-18T04:38:25.1505575Z ^[[1m^[[92m   Compiling^[[0m windows-link v0.2.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:25.1957912Z ^[[1m^[[92m   Compiling^[[0m smallvec v1.16.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:25.4656927Z ^[[1m^[[92m   Compiling^[[0m syn v3.0.9
+Tauri（windows-latest）	打包	2026-10-18T04:38:25.4738901Z ^[[1m^[[92m   Compiling^[[0m syn v2.0.119
+Tauri（windows-latest）	打包	2026-10-18T04:38:26.4410158Z ^[[1m^[[92m   Compiling^[[0m parking_lot_core v0.9.12
+Tauri（windows-latest）	打包	2026-10-18T04:38:27.1016722Z ^[[1m^[[92m   Compiling^[[0m serde v1.0.229
+Tauri（windows-latest）	打包	2026-10-18T04:38:27.9878829Z ^[[1m^[[92m   Compiling^[[0m memchr v2.8.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:28.7674847Z ^[[1m^[[92m   Compiling^[[0m typeid v1.0.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:29.3878904Z ^[[1m^[[92m   Compiling^[[0m synstructure v0.14.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:30.2062096Z ^[[1m^[[92m   Compiling^[[0m time-core v0.1.9
+Tauri（windows-latest）	打包	2026-10-18T04:38:30.2723771Z ^[[1m^[[92m   Compiling^[[0m num-conv v0.2.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:30.4872882Z ^[[1m^[[92m   Compiling^[[0m phf_codegen v0.13.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:30.5072568Z ^[[1m^[[92m   Compiling^[[0m litemap v0.8.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:30.6127842Z ^[[1m^[[92m   Compiling^[[0m strsim v0.11.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:30.7341801Z ^[[1m^[[92m   Compiling^[[0m erased-serde v0.4.10
+Tauri（windows-latest）	打包	2026-10-18T04:38:30.9797892Z ^[[1m^[[92m   Compiling^[[0m writeable v0.6.4
+Tauri（windows-latest）	打包	2026-10-18T04:38:31.2357669Z ^[[1m^[[92m   Compiling^[[0m ident_case v1.0.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:31.4103906Z ^[[1m^[[92m   Compiling^[[0m itoa v1.0.18
+Tauri（windows-latest）	打包	2026-10-18T04:38:31.5537916Z ^[[1m^[[92m   Compiling^[[0m darling_core v0.24.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:31.8276122Z ^[[1m^[[92m   Compiling^[[0m windows-sys v0.61.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:31.8689059Z ^[[1m^[[92m   Compiling^[[0m phf_macros v0.13.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:32.1945480Z ^[[1m^[[92m   Compiling^[[0m zerofrom-derive v0.1.8
+Tauri（windows-latest）	打包	2026-10-18T04:38:33.7171771Z ^[[1m^[[92m   Compiling^[[0m yoke-derive v0.8.4
+Tauri（windows-latest）	打包	2026-10-18T04:38:34.2011057Z ^[[1m^[[92m   Compiling^[[0m zerovec-derive v0.11.6
+Tauri（windows-latest）	打包	2026-10-18T04:38:35.6688716Z ^[[1m^[[92m   Compiling^[[0m serde_derive v1.0.229
+Tauri（windows-latest）	打包	2026-10-18T04:38:36.1278785Z ^[[1m^[[92m   Compiling^[[0m displaydoc v0.2.7
+Tauri（windows-latest）	打包	2026-10-18T04:38:36.2010700Z ^[[1m^[[92m   Compiling^[[0m zerofrom v0.1.8
+Tauri（windows-latest）	打包	2026-10-18T04:38:36.4870613Z ^[[1m^[[92m   Compiling^[[0m thiserror-impl v2.0.21
+Tauri（windows-latest）	打包	2026-10-18T04:38:37.5499753Z ^[[1m^[[92m   Compiling^[[0m yoke v0.8.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:37.9173401Z ^[[1m^[[92m   Compiling^[[0m zerovec v0.11.8
+Tauri（windows-latest）	打包	2026-10-18T04:38:38.7490053Z ^[[1m^[[92m   Compiling^[[0m zerotrie v0.2.5
+Tauri（windows-latest）	打包	2026-10-18T04:38:38.9359097Z ^[[1m^[[92m   Compiling^[[0m tinystr v0.8.4
+Tauri（windows-latest）	打包	2026-10-18T04:38:38.9569048Z ^[[1m^[[92m   Compiling^[[0m potential_utf v0.1.6
+Tauri（windows-latest）	打包	2026-10-18T04:38:39.1703237Z ^[[1m^[[92m   Compiling^[[0m icu_locale_core v2.3.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:39.2033024Z ^[[1m^[[92m   Compiling^[[0m utf8_iter v1.0.4
+Tauri（windows-latest）	打包	2026-10-18T04:38:39.2080371Z ^[[1m^[[92m   Compiling^[[0m darling_macro v0.24.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:39.3958263Z ^[[1m^[[92m   Compiling^[[0m icu_collections v2.3.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:40.1098263Z ^[[1m^[[92m   Compiling^[[0m scopeguard v1.2.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:40.1425446Z ^[[1m^[[92m   Compiling^[[0m new_debug_unreachable v1.0.6
+Tauri（windows-latest）	打包	2026-10-18T04:38:40.2500903Z ^[[1m^[[92m   Compiling^[[0m anyhow v1.0.104
+Tauri（windows-latest）	打包	2026-10-18T04:38:40.2520050Z ^[[1m^[[92m   Compiling^[[0m lock_api v0.4.14
+Tauri（windows-latest）	打包	2026-10-18T04:38:40.5877639Z ^[[1m^[[92m   Compiling^[[0m icu_provider v2.3.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:41.0324845Z ^[[1m^[[92m   Compiling^[[0m darling v0.24.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:41.1095999Z ^[[1m^[[92m   Compiling^[[0m phf v0.13.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:41.1157704Z ^[[1m^[[92m   Compiling^[[0m string_cache_codegen v0.6.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:41.4031806Z ^[[1m^[[92m   Compiling^[[0m serde_json v1.0.154
+Tauri（windows-latest）	打包	2026-10-18T04:38:41.4118447Z ^[[1m^[[92m   Compiling^[[0m precomputed-hash v0.1.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:41.4914015Z ^[[1m^[[92m   Compiling^[[0m getrandom v0.4.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:41.7132224Z ^[[1m^[[92m   Compiling^[[0m web_atoms v0.2.6
+Tauri（windows-latest）	打包	2026-10-18T04:38:41.7910841Z ^[[1m^[[92m   Compiling^[[0m parking_lot v0.12.5
+Tauri（windows-latest）	打包	2026-10-18T04:38:41.8245394Z ^[[1m^[[92m   Compiling^[[0m serde_with_macros v3.24.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:41.8922971Z ^[[1m^[[92m   Compiling^[[0m icu_normalizer v2.3.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:42.4169986Z ^[[1m^[[92m   Compiling^[[0m icu_properties v2.3.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:42.7841827Z ^[[1m^[[92m   Compiling^[[0m semver v1.0.28
+Tauri（windows-latest）	打包	2026-10-18T04:38:42.9234606Z ^[[1m^[[92m   Compiling^[[0m winnow v1.0.4
+Tauri（windows-latest）	打包	2026-10-18T04:38:43.5471569Z ^[[1m^[[92m   Compiling^[[0m toml_parser v1.1.5+spec-1.1.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:43.7120713Z ^[[1m^[[92m   Compiling^[[0m string_cache v0.9.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:43.9222753Z ^[[1m^[[92m   Compiling^[[0m serde_spanned v1.1.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:44.1975785Z ^[[1m^[[92m   Compiling^[[0m idna_adapter v1.2.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:44.4287260Z ^[[1m^[[92m   Compiling^[[0m toml_datetime v1.1.2+spec-1.1.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:44.4334047Z ^[[1m^[[92m   Compiling^[[0m percent-encoding v2.3.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:44.4421312Z ^[[1m^[[92m   Compiling^[[0m log v0.4.34
+Tauri（windows-latest）	打包	2026-10-18T04:38:44.6927634Z ^[[1m^[[92m   Compiling^[[0m autocfg v1.5.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:44.7043004Z ^[[1m^[[92m   Compiling^[[0m toml_writer v1.1.3+spec-1.1.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:44.8177749Z ^[[1m^[[92m   Compiling^[[0m dtoa v1.0.11
+Tauri（windows-latest）	打包	2026-10-18T04:38:45.0212531Z ^[[1m^[[92m   Compiling^[[0m dtoa-short v0.3.5
+Tauri（windows-latest）	打包	2026-10-18T04:38:45.0557377Z ^[[1m^[[92m   Compiling^[[0m toml v1.1.8+spec-1.1.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:45.1846946Z ^[[1m^[[92m   Compiling^[[0m indexmap v1.9.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:45.2097542Z ^[[1m^[[92m   Compiling^[[0m form_urlencoded v1.2.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:45.4524679Z ^[[1m^[[92m   Compiling^[[0m idna v1.1.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:45.7544043Z ^[[1m^[[92m   Compiling^[[0m uuid v1.28.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:46.4857968Z ^[[1m^[[92m   Compiling^[[0m tendril v0.5.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:46.8905720Z ^[[1m^[[92m   Compiling^[[0m cssparser-macros v0.7.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:46.9885095Z ^[[1m^[[92m   Compiling^[[0m derive_more-impl v2.1.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:47.0093604Z ^[[1m^[[92m   Compiling^[[0m selectors v0.38.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:47.3569731Z ^[[1m^[[92m   Compiling^[[0m aho-corasick v1.1.5
+Tauri（windows-latest）	打包	2026-10-18T04:38:47.5960297Z ^[[1m^[[92m   Compiling^[[0m bitflags v2.13.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:47.6256171Z ^[[1m^[[92m   Compiling^[[0m libc v0.2.191
+Tauri（windows-latest）	打包	2026-10-18T04:38:47.9066003Z ^[[1m^[[92m   Compiling^[[0m alloc-no-stdlib v3.0.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:48.1769511Z ^[[1m^[[92m   Compiling^[[0m regex-syntax v0.8.11
+Tauri（windows-latest）	打包	2026-10-18T04:38:48.3314151Z ^[[1m^[[92m   Compiling^[[0m camino v1.2.6
+Tauri（windows-latest）	打包	2026-10-18T04:38:48.4625302Z ^[[1m^[[92m   Compiling^[[0m derive_more v2.1.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:48.6737853Z ^[[1m^[[92m   Compiling^[[0m alloc-stdlib v0.3.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:48.8357077Z ^[[1m^[[92m   Compiling^[[0m cssparser v0.37.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:49.3523845Z ^[[1m^[[92m   Compiling^[[0m markup5ever v0.39.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:49.7717308Z ^[[1m^[[92m   Compiling^[[0m url v2.5.8
+Tauri（windows-latest）	打包	2026-10-18T04:38:49.9650825Z ^[[1m^[[92m   Compiling^[[0m winapi-util v0.1.11
+Tauri（windows-latest）	打包	2026-10-18T04:38:50.2864466Z ^[[1m^[[92m   Compiling^[[0m serde_derive_internals v0.29.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:50.3136410Z ^[[1m^[[92m   Compiling^[[0m servo_arc v0.4.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:50.6397065Z ^[[1m^[[92m   Compiling^[[0m powerfmt v0.2.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:50.9338227Z ^[[1m^[[92m   Compiling^[[0m regex-automata v0.4.18
+Tauri（windows-latest）	打包	2026-10-18T04:38:51.0463056Z ^[[1m^[[92m   Compiling^[[0m fnv v1.0.7
+Tauri（windows-latest）	打包	2026-10-18T04:38:51.2900761Z ^[[1m^[[92m   Compiling^[[0m schemars v0.8.22
+Tauri（windows-latest）	打包	2026-10-18T04:38:51.6736355Z ^[[1m^[[92m   Compiling^[[0m web-time v1.1.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:51.7661192Z ^[[1m^[[92m   Compiling^[[0m equivalent v1.0.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:51.8276986Z ^[[1m^[[92m   Compiling^[[0m rustc-hash v2.1.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:52.0081340Z ^[[1m^[[92m   Compiling^[[0m deranged v0.5.9
+Tauri（windows-latest）	打包	2026-10-18T04:38:52.1515830Z ^[[1m^[[92m   Compiling^[[0m bit-vec v0.8.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:52.2619076Z ^[[1m^[[92m   Compiling^[[0m hashbrown v0.17.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:52.5358579Z ^[[1m^[[92m   Compiling^[[0m hashbrown v0.12.3
+Tauri（windows-latest）	打包	2026-10-18T04:38:53.4047256Z ^[[1m^[[92m   Compiling^[[0m indexmap v2.14.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:53.8597855Z ^[[1m^[[92m   Compiling^[[0m regex v1.13.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:53.9025625Z ^[[1m^[[92m   Compiling^[[0m time v0.3.55
+Tauri（windows-latest）	打包	2026-10-18T04:38:54.6183700Z ^[[1m^[[92m   Compiling^[[0m bit-set v0.8.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:54.8633289Z ^[[1m^[[92m   Compiling^[[0m cfb v0.14.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:55.9374027Z ^[[1m^[[92m   Compiling^[[0m schemars_derive v0.8.22
+Tauri（windows-latest）	打包	2026-10-18T04:38:56.3860610Z ^[[1m^[[92m   Compiling^[[0m same-file v1.0.6
+Tauri（windows-latest）	打包	2026-10-18T04:38:56.6610822Z ^[[1m^[[92m   Compiling^[[0m html5ever v0.39.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:57.4593554Z ^[[1m^[[92m   Compiling^[[0m brotli-decompressor v6.0.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:57.4778925Z ^[[1m^[[92m   Compiling^[[0m jsonptr v0.7.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:57.7606306Z ^[[1m^[[92m   Compiling^[[0m cargo-platform v0.1.9
+Tauri（windows-latest）	打包	2026-10-18T04:38:58.1150187Z ^[[1m^[[92m   Compiling^[[0m quick-xml v0.42.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:58.1920232Z ^[[1m^[[92m   Compiling^[[0m base64 v0.23.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:58.2945431Z ^[[1m^[[92m   Compiling^[[0m tauri-utils v2.10.2
+Tauri（windows-latest）	打包	2026-10-18T04:38:58.8308568Z ^[[1m^[[92m   Compiling^[[0m dyn-clone v1.0.20
+Tauri（windows-latest）	打包	2026-10-18T04:38:58.9320306Z ^[[1m^[[92m   Compiling^[[0m foldhash v0.2.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:58.9819650Z ^[[1m^[[92m   Compiling^[[0m bytes v1.12.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:59.2312430Z ^[[1m^[[92m   Compiling^[[0m dunce v1.0.5
+Tauri（windows-latest）	打包	2026-10-18T04:38:59.4725946Z ^[[1m^[[92m   Compiling^[[0m dom_query v0.28.0
+Tauri（windows-latest）	打包	2026-10-18T04:38:59.4880829Z ^[[1m^[[92m   Compiling^[[0m plist v1.10.1
+Tauri（windows-latest）	打包	2026-10-18T04:38:59.6870401Z ^[[1m^[[92m   Compiling^[[0m brotli v9.0.0
+Tauri（windows-latest）	打包	2026-10-18T04:39:00.0260774Z ^[[1m^[[92m   Compiling^[[0m http v1.5.0
+Tauri（windows-latest）	打包	2026-10-18T04:39:02.0413912Z ^[[1m^[[92m   Compiling^[[0m cargo_metadata v0.19.2
+Tauri（windows-latest）	打包	2026-10-18T04:39:02.3604217Z ^[[1m^[[92m   Compiling^[[0m json-patch v4.2.0
+Tauri（windows-latest）	打包	2026-10-18T04:39:03.1418298Z ^[[1m^[[92m   Compiling^[[0m serde-untagged v0.1.9
+Tauri（windows-latest）	打包	2026-10-18T04:39:03.5053739Z ^[[1m^[[92m   Compiling^[[0m walkdir v2.5.0
+Tauri（windows-latest）	打包	2026-10-18T04:39:03.6096767Z ^[[1m^[[92m   Compiling^[[0m infer v0.22.0
+Tauri（windows-latest）	打包	2026-10-18T04:39:04.4309469Z ^[[1m^[[92m   Compiling^[[0m urlpattern v0.6.0
+Tauri（windows-latest）	打包	2026-10-18T04:39:05.0586769Z ^[[1m^[[92m   Compiling^[[0m serde_with v3.24.0
+Tauri（windows-latest）	打包	2026-10-18T04:39:05.2725116Z ^[[1m^[[92m   Compiling^[[0m glob v0.3.4
+Tauri（windows-latest）	打包	2026-10-18T04:39:05.4975220Z ^[[1m^[[92m   Compiling^[[0m find-msvc-tools v0.1.14
+Tauri（windows-latest）	打包	2026-10-18T04:39:05.5799125Z ^[[1m^[[92m   Compiling^[[0m ctor v1.0.13
+Tauri（windows-latest）	打包	2026-10-18T04:39:05.7206585Z ^[[1m^[[92m   Compiling^[[0m shlex v2.0.1
+Tauri（windows-latest）	打包	2026-10-18T04:39:05.7276237Z ^[[1m^[[92m   Compiling^[[0m version_check v0.9.5
+Tauri（windows-latest）	打包	2026-10-18T04:39:06.0107119Z ^[[1m^[[92m   Compiling^[[0m cc v1.8.0
+Tauri（windows-latest）	打包	2026-10-18T04:39:09.1029157Z ^[[1m^[[92m   Compiling^[[0m vswhom-sys v0.1.3
+Tauri（windows-latest）	打包	2026-10-18T04:39:14.1953305Z ^[[1m^[[92m   Compiling^[[0m windows-implement v0.60.2
+Tauri（windows-latest）	打包	2026-10-18T04:39:14.6277511Z ^[[1m^[[92m   Compiling^[[0m windows-interface v0.59.3
+Tauri（windows-latest）	打包	2026-10-18T04:39:15.1616915Z ^[[1m^[[92m   Compiling^[[0m windows-result v0.4.1
+Tauri（windows-latest）	打包	2026-10-18T04:39:15.6444557Z ^[[1m^[[92m   Compiling^[[0m windows-strings v0.5.1
+Tauri（windows-latest）	打包	2026-10-18T04:39:15.9451274Z ^[[1m^[[92m   Compiling^[[0m vswhom v0.1.0
+Tauri（windows-latest）	打包	2026-10-18T04:39:16.2236009Z ^[[1m^[[92m   Compiling^[[0m windows-core v0.62.2
+Tauri（windows-latest）	打包	2026-10-18T04:39:17.5009128Z ^[[1m^[[92m   Compiling^[[0m rustc_version v0.4.1
+Tauri（windows-latest）	打包	2026-10-18T04:39:17.5635854Z ^[[1m^[[92m   Compiling^[[0m winreg v0.56.0
+Tauri（windows-latest）	打包	2026-10-18T04:39:17.7291257Z ^[[1m^[[92m   Compiling^[[0m option-ext v0.2.0
+Tauri（windows-latest）	打包	2026-10-18T04:39:17.8745853Z ^[[1m^[[92m   Compiling^[[0m dirs-sys v0.5.0
+Tauri（windows-latest）	打包	2026-10-18T04:39:17.8851010Z ^[[1m^[[92m   Compiling^[[0m embed-resource v3.0.12
+Tauri（windows-latest）	打包	2026-10-18T04:39:18.1782197Z ^[[1m^[[92m   Compiling^[[0m simd-adler32 v0.3.10
+Tauri（windows-latest）	打包	2026-10-18T04:39:18.2409537Z ^[[1m^[[92m   Compiling^[[0m heck v0.5.0
+Tauri（windows-latest）	打包	2026-10-18T04:39:18.4712555Z ^[[1m^[[92m   Compiling^[[0m tauri-winres v0.3.6
+Tauri（windows-latest）	打包	2026-10-18T04:39:18.8327953Z ^[[1m^[[92m   Compiling^[[0m dirs v7.0.0
+Tauri（windows-latest）	打包	2026-10-18T04:39:18.9238032Z ^[[1m^[[92m   Compiling^[[0m generic-array v0.14.7
+Tauri（windows-latest）	打包	2026-10-18T04:39:19.3323234Z ^[[1m^[[92m   Compiling^[[0m cargo_toml v1.0.1
+Tauri（windows-latest）	打包	2026-10-18T04:39:20.5068303Z ^[[1m^[[92m   Compiling^[[0m windows-threading v0.2.1
+Tauri（windows-latest）	打包	2026-10-18T04:39:20.7347389Z ^[[1m^[[92m   Compiling^[[0m adler2 v2.0.1
+Tauri（windows-latest）	打包	2026-10-18T04:39:20.8263335Z ^[[1m^[[92m   Compiling^[[0m crc32fast v1.5.2
+Tauri（windows-latest）	打包	2026-10-18T04:39:21.0886751Z ^[[1m^[[92m   Compiling^[[0m static_vcruntime v3.0.0
+Tauri（windows-latest）	打包	2026-10-18T04:39:21.1641205Z ^[[1m^[[92m   Compiling^[[0m tauri-build v2.7.3
+Tauri（windows-latest）	打包	2026-10-18T04:39:21.8606226Z ^[[1m^[[92m   Compiling^[[0m windows-future v0.3.2
+Tauri（windows-latest）	打包	2026-10-18T04:39:22.9601499Z ^[[1m^[[92m   Compiling^[[0m windows-numerics v0.3.1
+Tauri（windows-latest）	打包	2026-10-18T04:39:22.9702567Z ^[[1m^[[92m   Compiling^[[0m windows-collections v0.3.2
+Tauri（windows-latest）	打包	2026-10-18T04:39:23.2449656Z ^[[1m^[[92m   Compiling^[[0m time-macros v0.2.32
+Tauri（windows-latest）	打包	2026-10-18T04:39:23.3761496Z ^[[1m^[[92m   Compiling^[[0m raw-window-handle v0.6.2
+Tauri（windows-latest）	打包	2026-10-18T04:39:23.8971090Z ^[[1m^[[92m   Compiling^[[0m crossbeam-utils v0.8.23
+Tauri（windows-latest）	打包	2026-10-18T04:39:24.0885656Z ^[[1m^[[92m   Compiling^[[0m typenum v1.20.1
+Tauri（windows-latest）	打包	2026-10-18T04:39:25.3929135Z ^[[1m^[[92m   Compiling^[[0m windows v0.62.2
+Tauri（windows-latest）	打包	2026-10-18T04:39:29.9556139Z ^[[1m^[[92m   Compiling^[[0m miniz_oxide v0.9.1
+Tauri（windows-latest）	打包	2026-10-18T04:39:30.2269616Z ^[[1m^[[92m   Compiling^[[0m tauri-plugin v2.7.2
+Tauri（windows-latest）	打包	2026-10-18T04:39:30.7185680Z ^[[1m^[[92m   Compiling^[[0m dpi v0.1.2
+Tauri（windows-latest）	打包	2026-10-18T04:39:31.1405896Z ^[[1m^[[92m   Compiling^[[0m webview2-com-sys v0.39.1
+Tauri（windows-latest）	打包	2026-10-18T04:39:39.4758269Z ^[[1m^[[92m   Compiling^[[0m flate2 v1.1.10
+Tauri（windows-latest）	打包	2026-10-18T04:39:40.0013897Z ^[[1m^[[92m   Compiling^[[0m tauri v2.12.4
+Tauri（windows-latest）	打包	2026-10-18T04:39:44.9376829Z ^[[1m^[[92m   Compiling^[[0m miniz_oxide v0.8.9
+Tauri（windows-latest）	打包	2026-10-18T04:39:45.0925996Z ^[[1m^[[92m   Compiling^[[0m fdeflate v0.3.7
+Tauri（windows-latest）	打包	2026-10-18T04:39:45.6098451Z ^[[1m^[[92m   Compiling^[[0m cookie v0.18.2
+Tauri（windows-latest）	打包	2026-10-18T04:39:51.1060604Z ^[[1m^[[92m   Compiling^[[0m crossbeam-channel v0.5.17
+Tauri（windows-latest）	打包	2026-10-18T04:39:56.1685843Z ^[[1m^[[92m   Compiling^[[0m crypto-common v0.1.7
+Tauri（windows-latest）	打包	2026-10-18T04:39:56.2587977Z ^[[1m^[[92m   Compiling^[[0m block-buffer v0.10.4
+Tauri（windows-latest）	打包	2026-10-18T04:39:56.4567677Z ^[[1m^[[92m   Compiling^[[0m webview2-com-macros v0.8.1
+Tauri（windows-latest）	打包	2026-10-18T04:39:57.5759183Z ^[[1m^[[92m   Compiling^[[0m windows-version v0.1.7
+Tauri（windows-latest）	打包	2026-10-18T04:39:57.9097234Z ^[[1m^[[92m   Compiling^[[0m once_cell v1.21.4
+Tauri（windows-latest）	打包	2026-10-18T04:39:58.1398900Z ^[[1m^[[92m   Compiling^[[0m pin-project-lite v0.2.17
+Tauri（windows-latest）	打包	2026-10-18T04:39:59.5423188Z ^[[1m^[[92m   Compiling^[[0m bitflags v1.3.2
+Tauri（windows-latest）	打包	2026-10-18T04:39:59.5947886Z ^[[1m^[[92m   Compiling^[[0m png v0.17.16
+Tauri（windows-latest）	打包	2026-10-18T04:40:02.0866392Z ^[[1m^[[92m   Compiling^[[0m digest v0.10.7
+Tauri（windows-latest）	打包	2026-10-18T04:40:12.0430261Z ^[[1m^[[92m   Compiling^[[0m wry v0.57.0
+Tauri（windows-latest）	打包	2026-10-18T04:40:12.1616138Z ^[[1m^[[92m   Compiling^[[0m tracing-core v0.1.36
+Tauri（windows-latest）	打包	2026-10-18T04:40:12.3937260Z ^[[1m^[[92m   Compiling^[[0m tauri-runtime v2.12.2
+Tauri（windows-latest）	打包	2026-10-18T04:40:12.6089942Z ^[[1m^[[92m   Compiling^[[0m byteorder v1.5.0
+Tauri（windows-latest）	打包	2026-10-18T04:40:13.1123678Z ^[[1m^[[92m   Compiling^[[0m muda v0.20.0
+Tauri（windows-latest）	打包	2026-10-18T04:40:13.3630751Z ^[[1m^[[92m   Compiling^[[0m cpufeatures v0.2.17
+Tauri（windows-latest）	打包	2026-10-18T04:40:14.3477199Z ^[[1m^[[92m   Compiling^[[0m sha2 v0.10.9
+Tauri（windows-latest）	打包	2026-10-18T04:40:14.8172626Z ^[[1m^[[92m   Compiling^[[0m ico v0.5.0
+Tauri（windows-latest）	打包	2026-10-18T04:40:15.7780698Z ^[[1m^[[92m   Compiling^[[0m tracing v0.1.44
+Tauri（windows-latest）	打包	2026-10-18T04:40:16.2263913Z ^[[1m^[[92m   Compiling^[[0m webview2-com v0.39.1
+Tauri（windows-latest）	打包	2026-10-18T04:40:19.8061739Z ^[[1m^[[92m   Compiling^[[0m keyboard-types v0.8.3
+Tauri（windows-latest）	打包	2026-10-18T04:40:21.7854453Z ^[[1m^[[92m   Compiling^[[0m png v0.18.1
+Tauri（windows-latest）	打包	2026-10-18T04:40:21.9282887Z ^[[1m^[[92m   Compiling^[[0m windows_x86_64_msvc v0.53.1
+Tauri（windows-latest）	打包	2026-10-18T04:40:22.1328355Z ^[[1m^[[92m   Compiling^[[0m getrandom v0.3.4
+Tauri（windows-latest）	打包	2026-10-18T04:40:22.4868747Z ^[[1m^[[92m   Compiling^[[0m tray-icon v0.25.1
+Tauri（windows-latest）	打包	2026-10-18T04:40:22.8358393Z ^[[1m^[[92m   Compiling^[[0m unicode-segmentation v1.13.3
+Tauri（windows-latest）	打包	2026-10-18T04:40:23.3835319Z ^[[1m^[[92m   Compiling^[[0m tauri-runtime-wry v2.12.2
+Tauri（windows-latest）	打包	2026-10-18T04:40:23.6374286Z ^[[1m^[[92m   Compiling^[[0m tao v0.37.1
+Tauri（windows-latest）	打包	2026-10-18T04:40:23.7249664Z ^[[1m^[[92m   Compiling^[[0m tauri-codegen v2.7.3
+Tauri（windows-latest）	打包	2026-10-18T04:40:30.0745621Z ^[[1m^[[92m   Compiling^[[0m softbuffer v0.4.8
+Tauri（windows-latest）	打包	2026-10-18T04:40:31.3961952Z ^[[1m^[[92m   Compiling^[[0m tauri-plugin-fs v2.7.1
+Tauri（windows-latest）	打包	2026-10-18T04:40:32.4720029Z ^[[1m^[[92m   Compiling^[[0m serialize-to-javascript-impl v0.1.2
+Tauri（windows-latest）	打包	2026-10-18T04:40:32.8869684Z ^[[1m^[[92m   Compiling^[[0m serialize-to-javascript v0.1.2
+Tauri（windows-latest）	打包	2026-10-18T04:40:34.9224863Z ^[[1m^[[92m   Compiling^[[0m tauri-macros v2.7.3
+Tauri（windows-latest）	打包	2026-10-18T04:40:35.2502943Z ^[[1m^[[92m   Compiling^[[0m tokio v1.53.3
+Tauri（windows-latest）	打包	2026-10-18T04:40:35.5654017Z ^[[1m^[[92m   Compiling^[[0m window-vibrancy v0.8.1
+Tauri（windows-latest）	打包	2026-10-18T04:40:35.8080620Z ^[[1m^[[92m   Compiling^[[0m serde_repr v0.1.21
+Tauri（windows-latest）	打包	2026-10-18T04:40:36.7786722Z ^[[1m^[[92m   Compiling^[[0m mime v0.3.17
+Tauri（windows-latest）	打包	2026-10-18T04:40:37.4122086Z ^[[1m^[[92m   Compiling^[[0m windows-targets v0.53.5
+Tauri（windows-latest）	打包	2026-10-18T04:40:37.4598521Z ^[[1m^[[92m   Compiling^[[0m tauri-plugin-dialog v2.8.3
+Tauri（windows-latest）	打包	2026-10-18T04:40:37.5492606Z ^[[1m^[[92m   Compiling^[[0m tauri-plugin-opener v2.7.2
+Tauri（windows-latest）	打包	2026-10-18T04:40:38.4636808Z ^[[1m^[[92m   Compiling^[[0m rfd v0.16.0
+Tauri（windows-latest）	打包	2026-10-18T04:40:38.6955701Z ^[[1m^[[92m   Compiling^[[0m windows-sys v0.60.2
+Tauri（windows-latest）	打包	2026-10-18T04:40:38.7049429Z ^[[1m^[[92m   Compiling^[[0m open v5.4.4
+Tauri（windows-latest）	打包	2026-10-18T04:40:39.1797292Z ^[[1m^[[92m   Compiling^[[0m zhuopu-desktop v0.1.0 (D:\a\ZhuopuERW\ZhuopuERW\desktop\tauri\src-tauri)
+Tauri（windows-latest）	打包	2026-10-18T04:41:02.8864149Z ^[[1m^[[93mwarning^[[0m^[[1m^[[97m: unused import: `tauri_plugin_dialog::DialogExt`^[[0m
+Tauri（windows-latest）	打包	2026-10-18T04:41:02.8864976Z   ^[[1m^[[96m--> ^[[0msrc\main.rs:21:5
+Tauri（windows-latest）	打包	2026-10-18T04:41:02.8865336Z    ^[[1m^[[96m|^[[0m
+Tauri（windows-latest）	打包	2026-10-18T04:41:02.8865912Z ^[[1m^[[96m21^[[0m ^[[1m^[[96m|^[[0m use tauri_plugin_dialog::DialogExt;
+Tauri（windows-latest）	打包	2026-10-18T04:41:02.8866478Z    ^[[1m^[[96m|^[[0m     ^[[1m^[[93m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[[0m
+Tauri（windows-latest）	打包	2026-10-18T04:41:02.8866867Z    ^[[1m^[[96m|^[[0m
+Tauri（windows-latest）	打包	2026-10-18T04:41:02.8867706Z    ^[[1m^[[96m= ^[[0m^[[1m^[[97mnote^[[0m: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+Tauri（windows-latest）	打包	2026-10-18T04:41:02.8868447Z 
+Tauri（windows-latest）	打包	2026-10-18T04:41:49.7406574Z ^[[1m^[[93mwarning^[[0m: `zhuopu-desktop` (bin "zhuopu-desktop") generated 1 warning (run `cargo fix --bin "zhuopu-desktop" -p zhuopu-desktop` to apply 1 suggestion)
+Tauri（windows-latest）	打包	2026-10-18T04:41:49.7407535Z ^[[1m^[[92m    Finished^[[0m `release` profile [optimized] target(s) in 3m 37s
+Tauri（windows-latest）	打包	2026-10-18T04:41:49.9244041Z        Built application at: D:\a\ZhuopuERW\ZhuopuERW\desktop\tauri\src-tauri\target\release\zhuopu-desktop.exe
+Tauri（windows-latest）	打包	2026-10-18T04:41:49.9412230Z         Info Patching D:\a\ZhuopuERW\ZhuopuERW\desktop\tauri\src-tauri\target\release\zhuopu-desktop.exe with bundle type information: msi
+Tauri（windows-latest）	打包	2026-10-18T04:41:49.9634411Z         Info Verifying wix package
+Tauri（windows-latest）	打包	2026-10-18T04:41:49.9635131Z  Downloading https://github.com/wixtoolset/wix3/releases/download/wix3141rtm/wix314-binaries.zip
+Tauri（windows-latest）	打包	2026-10-18T04:41:50.2674163Z         Info validating hash
+Tauri（windows-latest）	打包	2026-10-18T04:41:50.2903869Z         Info extracting WIX
+Tauri（windows-latest）	打包	2026-10-18T04:41:50.8258478Z         Info Target: x64
+Tauri（windows-latest）	打包	2026-10-18T04:41:50.8354281Z      Running candle for "D:\\a\\ZhuopuERW\\ZhuopuERW\\desktop\\tauri\\src-tauri\\target\\release\\wix\\x64\\main.wxs"
+Tauri（windows-latest）	打包	2026-10-18T04:41:54.9717554Z      Running light to produce D:\a\ZhuopuERW\ZhuopuERW\desktop\tauri\src-tauri\target\release\bundle\msi\琢璞英语讲评工作台_1.0.0_x64_en-US.msi
+Tauri（windows-latest）	打包	2026-10-18T04:41:57.7738248Z        Error failed to bundle project: `failed to run C:\Users\runneradmin\AppData\Local\tauri\WixTools314\light.exe: Windows Installer XML Toolset Linker version 3.14.1.8722
+Tauri（windows-latest）	打包	2026-10-18T04:41:57.7740635Z Copyright (c) .NET Foundation and contributors. All rights reserved.
+Tauri（windows-latest）	打包	2026-10-18T04:41:57.7741113Z 
+Tauri（windows-latest）	打包	2026-10-18T04:41:57.7743678Z D:\a\ZhuopuERW\ZhuopuERW\desktop\tauri\src-tauri\target\release\wix\x64\main.wxs(23) : error LGHT0311 : A string was provided with characters that are not available in the specified database code page '1252'. Either change these characters to ones that exist in the database's code page, or update the database's code page by modifying one of the following attributes: Product/@Codepage, Module/@Codepage, Patch/@Codepage, PatchCreation/@Codepage, or WixLocalization/@Codepage.
+Tauri（windows-latest）	打包	2026-10-18T04:41:57.7748355Z D:\a\ZhuopuERW\ZhuopuERW\desktop\tauri\src-tauri\target\release\wix\x64\main.wxs(23) : error LGHT0311 : A string was provided with characters that are not available in the specified database code page '1252'. Either change these characters to ones that exist in the database's code page, or update the database's code page by modifying one of the following attributes: Product/@Codepage, Module/@Codepage, Patch/@Codepage, PatchCreation/@Codepage, or WixLocalization/@Codepage.
+Tauri（windows-latest）	打包	2026-10-18T04:41:57.7752803Z D:\a\ZhuopuERW\ZhuopuERW\desktop\tauri\src-tauri\target\release\wix\x64\main.wxs(102) : error LGHT0311 : A string was provided with characters that are not available in the specified database code page '1252'. Either change these characters to ones that exist in the database's code page, or update the database's code page by modifying one of the following attributes: Product/@Codepage, Module/@Codepage, Patch/@Codepage, PatchCreation/@Codepage, or WixLocalization/@Codepage.
+Tauri（windows-latest）	打包	2026-10-18T04:41:57.7756658Z D:\a\ZhuopuERW\ZhuopuERW\desktop\tauri\src-tauri\target\release\wix\x64\main.wxs(105) : error LGHT0311 : A string was provided with characters that are not available in the specified database code page '1252'. Either change these characters to ones that exist in the database's code page, or update the database's code page by modifying one of the following attributes: Product/@Codepage, Module/@Codepage, Patch/@Codepage, PatchCreation/@Codepage, or WixLocalization/@Codepage.
+Tauri（windows-latest）	打包	2026-10-18T04:41:57.7761160Z D:\a\ZhuopuERW\ZhuopuERW\desktop\tauri\src-tauri\target\release\wix\x64\main.wxs(177) : error LGHT0311 : A string was provided with characters that are not available in the specified database code page '1252'. Either change these characters to ones that exist in the database's code page, or update the database's code page by modifying one of the following attributes: Product/@Codepage, Module/@Codepage, Patch/@Codepage, PatchCreation/@Codepage, or WixLocalization/@Codepage.
+Tauri（windows-latest）	打包	2026-10-18T04:41:57.7765565Z D:\a\ZhuopuERW\ZhuopuERW\desktop\tauri\src-tauri\target\release\wix\x64\main.wxs(155) : error LGHT0311 : A string was provided with characters that are not available in the specified database code page '1252'. Either change these characters to ones that exist in the database's code page, or update the database's code page by modifying one of the following attributes: Product/@Codepage, Module/@Codepage, Patch/@Codepage, PatchCreation/@Codepage, or WixLocalization/@Codepage.
+Tauri（windows-latest）	打包	2026-10-18T04:41:57.7769772Z D:\a\ZhuopuERW\ZhuopuERW\desktop\tauri\src-tauri\target\release\wix\x64\main.wxs(68) : error LGHT0311 : A string was provided with characters that are not available in the specified database code page '1252'. Either change these characters to ones that exist in the database's code page, or update the database's code page by modifying one of the following attributes: Product/@Codepage, Module/@Codepage, Patch/@Codepage, PatchCreation/@Codepage, or WixLocalization/@Codepage.
+Tauri（windows-latest）	打包	2026-10-18T04:41:57.7772737Z D:\a\ZhuopuERW\ZhuopuERW\desktop\tauri\src-tauri\target\release\wix\x64\main.wxs(15) : error LGHT0311 : A string was provided with characters that are not available in the specified database code page '1252'. Either change these characters to ones that exist in the database's code page, or update the database's code page by modifying one of the following attributes: Product/@Codepage, Module/@Codepage, Patch/@Codepage, PatchCreation/@Codepage, or WixLocalization/@Codepage.
+Tauri（windows-latest）	打包	2026-10-18T04:41:57.7775753Z D:\a\ZhuopuERW\ZhuopuERW\desktop\tauri\src-tauri\target\release\wix\x64\main.wxs(98) : error LGHT0311 : A string was provided with characters that are not available in the specified database code page '1252'. Either change these characters to ones that exist in the database's code page, or update the database's code page by modifying one of the following attributes: Product/@Codepage, Module/@Codepage, Patch/@Codepage, PatchCreation/@Codepage, or WixLocalization/@Codepage.
+Tauri（windows-latest）	打包	2026-10-18T04:41:57.7778574Z D:\a\ZhuopuERW\ZhuopuERW\desktop\tauri\src-tauri\target\release\wix\x64\main.wxs(112) : error LGHT0311 : A string was provided with characters that are not available in the specified database code page '1252'. Either change these characters to ones that exist in the database's code page, or update the database's code page by modifying one of the following attributes: Product/@Codepage, Module/@Codepage, Patch/@Codepage, PatchCreation/@Codepage, or WixLocalization/@Codepage.
+Tauri（windows-latest）	打包	2026-10-18T04:41:57.7781378Z D:\a\ZhuopuERW\ZhuopuERW\desktop\tauri\src-tauri\target\release\wix\x64\main.wxs(131) : error LGHT0311 : A string was provided with characters that are not available in the specified database code page '1252'. Either change these characters to ones that exist in the database's code page, or update the database's code page by modifying one of the following attributes: Product/@Codepage, Module/@Codepage, Patch/@Codepage, PatchCreation/@Codepage, or WixLocalization/@Codepage.
+Tauri（windows-latest）	打包	2026-10-18T04:41:57.7784233Z D:\a\ZhuopuERW\ZhuopuERW\desktop\tauri\src-tauri\target\release\wix\x64\main.wxs(151) : error LGHT0311 : A string was provided with characters that are not available in the specified database code page '1252'. Either change these characters to ones that exist in the database's code page, or update the database's code page by modifying one of the following attributes: Product/@Codepage, Module/@Codepage, Patch/@Codepage, PatchCreation/@Codepage, or WixLocalization/@Codepage.
+Tauri（windows-latest）	打包	2026-10-18T04:41:57.7787095Z D:\a\ZhuopuERW\ZhuopuERW\desktop\tauri\src-tauri\target\release\wix\x64\main.wxs(61) : error LGHT0311 : A string was provided with characters that are not available in the specified database code page '1252'. Either change these characters to ones that exist in the database's code page, or update the database's code page by modifying one of the following attributes: Product/@Codepage, Module/@Codepage, Patch/@Codepage, PatchCreation/@Codepage, or WixLocalization/@Codepage.
+Tauri（windows-latest）	打包	2026-10-18T04:41:57.7790232Z D:\a\ZhuopuERW\ZhuopuERW\desktop\tauri\src-tauri\target\release\wix\x64\main.wxs(64) : error LGHT0311 : A string was provided with characters that are not available in the specified database code page '1252'. Either change these characters to ones that exist in the database's code page, or update the database's code page by modifying one of the following attributes: Product/@Codepage, Module/@Codepage, Patch/@Codepage, PatchCreation/@Codepage, or WixLocalization/@Codepage.
+Tauri（windows-latest）	打包	2026-10-18T04:41:57.7793566Z D:\a\ZhuopuERW\ZhuopuERW\desktop\tauri\src-tauri\target\release\wix\x64\main.wxs(96) : error LGHT0311 : A string was provided with characters that are not available in the specified database code page '1252'. Either change these characters to ones that exist in the database's code page, or update the database's code page by modifying one of the following attributes: Product/@Codepage, Module/@Codepage, Patch/@Codepage, PatchCreation/@Codepage, or WixLocalization/@Codepage.
+Tauri（windows-latest）	打包	2026-10-18T04:41:57.7796514Z D:\a\ZhuopuERW\ZhuopuERW\desktop\tauri\src-tauri\target\release\wix\x64\main.wxs(122) : error LGHT0311 : A string was provided with characters that are not available in the specified database code page '1252'. Either change these characters to ones that exist in the database's code page, or update the database's code page by modifying one of the following attributes: Product/@Codepage, Module/@Codepage, Patch/@Codepage, PatchCreation/@Codepage, or WixLocalization/@Codepage.
+Tauri（windows-latest）	打包	2026-10-18T04:41:57.7799515Z D:\a\ZhuopuERW\ZhuopuERW\desktop\tauri\src-tauri\target\release\wix\x64\main.wxs(142) : error LGHT0311 : A string was provided with characters that are not available in the specified database code page '1252'. Either change these characters to ones that exist in the database's code page, or update the database's code page by modifying one of the following attributes: Product/@Codepage, Module/@Codepage, Patch/@Codepage, PatchCreation/@Codepage, or WixLocalization/@Codepage.`
+Tauri（windows-latest）	打包	2026-10-18T04:41:57.8810254Z ##[error]Process completed with exit code 1.
