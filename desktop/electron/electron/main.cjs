@@ -33,6 +33,11 @@ const DEV_URL = process.env.ZHUOPU_DEV_URL || 'http://127.0.0.1:5173';
 const loadMode = process.env.ZHUOPU_LOAD || 'static';
 const API_ORIGIN = 'https://zhuopu.xuanjian.top'; // 写死 HK 后端，不再读环境变量
 
+/** 给加载地址追加 shell=1，前端据此渲染自绘标题栏（不依赖 preload 是否注入） */
+function withShell(u) {
+    return u + (u.includes('?') ? '&' : '?') + 'shell=1';
+}
+
 const WEB_DIST = app.isPackaged
     ? path.join(process.resourcesPath, 'web-dist')
     : path.join(__dirname, '..', 'web-dist');
@@ -187,9 +192,9 @@ function createWindow() {
 
     // 这是白屏的真正原因：之前这里只判断 isDev，未打包时永远去连 Vite(5173)，
     // 而 5173 没起 → 页面什么都没加载 → 白屏。现在按 loadMode 三选一。
-    if (loadMode === 'dev') mainWindow.loadURL(DEV_URL);
-    else if (loadMode === 'remote') mainWindow.loadURL(API_ORIGIN + '/');
-    else mainWindow.loadURL(`http://127.0.0.1:${localPort}/`);
+    if (loadMode === 'dev') mainWindow.loadURL(withShell(DEV_URL));
+    else if (loadMode === 'remote') mainWindow.loadURL(withShell(API_ORIGIN + '/'));
+    else mainWindow.loadURL(withShell(`http://127.0.0.1:${localPort}/`));
 
     mainWindow.webContents.on('console-message', (_e, level, message, line, sourceId) => {
         // 注意：启动它的终端/管道关闭后 console.log 会抛 EPIPE，
