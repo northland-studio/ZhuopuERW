@@ -42,9 +42,6 @@
     "icon": [
       "icons/icon.png"
     ],
-    "resources": [
-      "../../web/public/fonts/*",
-      "../../web/public/brand/*"
-    ]
+    "resources": []
   }
 }

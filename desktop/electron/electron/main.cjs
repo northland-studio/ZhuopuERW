@@ -17,6 +17,8 @@ const { URL } = require('node:url');
 
 const isDev = !app.isPackaged;
 const DEV_URL = process.env.ZHUOPU_DEV_URL || 'http://127.0.0.1:5173';
+/** 本地开发时也可以直接跑构建产物（不启 Vite）：ZHUOPU_DEV_STATIC=1 */
+const loadMode = process.env.ZHUOPU_LOAD || (process.env.ZHUOPU_DEV_STATIC === '1' ? 'static' : (isDev ? 'dev' : 'remote'));
 const API_ORIGIN = process.env.ZHUOPU_API_ORIGIN || 'https://zhuopu.xuanjian.top';
 
 const WEB_DIST = app.isPackaged
@@ -80,14 +82,24 @@ function serveStatic(req, res) {
             if (!path.extname(filePath)) {
                 fs.readFile(path.join(WEB_DIST, 'index.html'), (e2, html) => {
                     if (e2) { res.writeHead(404).end('Not Found'); return; }
-                    res.writeHead(200, { 'Content-Type': MIME['.html'] }).end(html);
+                    res.writeHead(200, {
+                        'Content-Type': MIME['.html'],
+                        'Access-Control-Allow-Origin': '*',
+                        'Cache-Control': 'no-cache'
+                    }).end(html);
                 });
                 return;
             }
             res.writeHead(404).end('Not Found');
             return;
         }
-        res.writeHead(200, { 'Content-Type': MIME[path.extname(filePath).toLowerCase()] || 'application/octet-stream' });
+        res.writeHead(200, {
+            'Content-Type': MIME[path.extname(filePath).toLowerCase()] || 'application/octet-stream',
+            'Access-Control-Allow-Origin': '*',
+            'Cross-Origin-Resource-Policy': 'cross-origin',
+            'X-Content-Type-Options': 'nosniff',
+            'Cache-Control': 'no-cache'
+        });
         res.end(buf);
     });
 }
@@ -151,7 +163,7 @@ function createWindow() {
         titleBarStyle: 'hidden',
         icon: appIcon(),
         webPreferences: {
-            preload: path.join(__dirname, 'preload.cjs'),
+            preload: process.env.ZHUOPU_NO_PRELOAD === '1' ? undefined : path.join(__dirname, 'preload.cjs'),
             contextIsolation: true,
             nodeIntegration: false,
             sandbox: false,
@@ -164,12 +176,22 @@ function createWindow() {
     if (isDev) mainWindow.loadURL(DEV_URL);
     else mainWindow.loadURL(`http://127.0.0.1:${localPort}/`);
 
+    mainWindow.webContents.on('console-message', (_e, level, message, line, sourceId) => {
+        console.log('[渲染]', level, message, sourceId ? sourceId.split('/').pop() + ':' + line : '');
+    });
+    mainWindow.webContents.on('preload-error', (_e, preloadPath, error) => {
+        console.error('[preload 错误]', preloadPath, error && error.message);
+    });
+    mainWindow.webContents.on('render-process-gone', (_e, details) => {
+        console.error('[渲染进程崩溃]', JSON.stringify(details));
+    });
     mainWindow.webContents.on('did-fail-load', (_e, code, desc, url) => {
         console.error(`[加载失败] ${code} ${desc} ${url}`);
     });
 
     mainWindow.webContents.on('before-input-event', (event, input) => {
         const key = (input.key || '').toLowerCase();
+        if (isDev && input.control && input.shift && key === 'i') return; // 开发时允许 Ctrl+Shift+I
         const blocking =
             key === 'f12' ||
             (input.control && input.shift && ['i', 'j', 'c'].includes(key)) ||
@@ -283,12 +305,8 @@ if (!gotLock) {
 
     app.whenReady().then(async () => {
         Menu.setApplicationMenu(null);
-        if (isDev) {
-            createWindow();
-        } else {
-            await startLocalServer();
-            createWindow();
-        }
+        if (loadMode === 'static') await startLocalServer();
+        createWindow();
         createTray();
 
         app.on('activate', () => {
