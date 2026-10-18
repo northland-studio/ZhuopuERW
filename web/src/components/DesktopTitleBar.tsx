@@ -23,7 +23,7 @@ export function DesktopTitleBar() {
 
     return (
         <div className="tbar" role="banner">
-            <div className="tbar-drag" />
+            <div className="tbar-drag" data-tauri-drag-region />
             <div className="tbar-brand">
                 <img src="/brand/logo.png" alt="" width={18} height={18} className="tbar-logo" />
                 <span className="tbar-title">琢璞英语讲评工作台</span>

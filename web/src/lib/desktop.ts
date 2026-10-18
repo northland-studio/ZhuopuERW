@@ -1,9 +1,9 @@
 /**
  * 桌面端桥接（Electron / Tauri 共用一套调用约定）
  *
- * Electron 走 preload 暴露的 window.zhuopuDesktop；
- * Tauri 通过 @tauri-apps/api 的 invoke 暴露同名能力。
- * 网页端 hasDesktop() 为 false，顶部操作栏不渲染。
+ * - Electron：走 preload 暴露的 window.zhuopuDesktop
+ * - Tauri：走 @tauri-apps/api 的 invoke，命令名与 main.rs 里注册的一致
+ * - 网页端 hasDesktop() 为 false，顶部操作栏不渲染
  */
 
 export interface DesktopReviewFile {
@@ -32,17 +32,48 @@ export interface DesktopBridge {
 
 type Win = Window & { zhuopuDesktop?: DesktopBridge; __TAURI_INTERNALS__?: unknown };
 
-/** 主进程加载时带了 ?shell=1，标识「跑在桌面壳里」，不依赖 preload 是否注入 */
+/** 是否运行在 Tauri 里 */
+export function isTauri(): boolean {
+    return typeof window !== 'undefined' && !!(window as Win).__TAURI_INTERNALS__;
+}
+
+/** 主进程加载时带了 ?shell=1（Electron 兜底，不依赖 preload 是否注入） */
 function shellFlag(): boolean {
     return typeof window !== 'undefined' && /[?&]shell=1/.test(window.location.search);
+}
+
+/** Tauri 命令调用（动态加载，避免 Web/Electron 构建把 Tauri API 打进来） */
+async function tauriInvoke<T>(cmd: string, args?: Record<string, unknown>): Promise<T> {
+    const { invoke } = await import('@tauri-apps/api/core');
+    return (await invoke(cmd, args)) as T;
+}
+
+function tauriBridge(): DesktopBridge {
+    return {
+        isDesktop: true,
+        platform: 'tauri',
+        minimize: () => void tauriInvoke('window_minimize'),
+        toggleMaximize: async () => (await tauriInvoke<boolean>('window_toggle_maximize')) ?? false,
+        close: () => void tauriInvoke('window_close'),
+        isMaximized: () => false,
+        info: async () => ({ version: '', platform: 'tauri' }),
+        review: {
+            list: () => tauriInvoke('review_list'),
+            read: (name) => tauriInvoke('review_read', { name }),
+            write: (name, content) => tauriInvoke('review_write', { name, content }),
+            remove: (name) => tauriInvoke('review_delete', { name }),
+            reveal: () => tauriInvoke<void>('review_reveal')
+        },
+        pickFile: async () => null
+    };
 }
 
 export function desktop(): DesktopBridge | null {
     if (typeof window === 'undefined') return null;
     const b = (window as Win).zhuopuDesktop;
     if (b) return b;
-    // preload 未注入时的兜底：仍返回一个壳，让标题栏渲染出来；
-    // 按钮调用无副作用，真正生效需 preload 正常注入。
+    if (isTauri()) return tauriBridge();
+    // preload 未注入时的兜底：仍返回一个壳，让标题栏渲染出来
     if (shellFlag()) {
         const noop = () => {};
         return {
@@ -67,10 +98,5 @@ export function desktop(): DesktopBridge | null {
 }
 
 export function hasDesktop(): boolean {
-    return !!desktop() || shellFlag();
-}
-
-/** 是否运行在 Tauri 里（用于显示不同的窗口按钮风格） */
-export function isTauri(): boolean {
-    return typeof window !== 'undefined' && !!(window as Win).__TAURI_INTERNALS__;
+    return !!desktop() || shellFlag() || isTauri();
 }
