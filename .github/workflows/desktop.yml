@@ -49,9 +49,7 @@ jobs:
           pnpm --filter zhuopu-web build
 
       - name: 准备图标
-        run: |
-          mkdir -p desktop/tauri/src-tauri/icons
-          cp web/public/brand/logo.png desktop/tauri/src-tauri/icons/icon.png
+        run: node scripts/gen-icon-ico.mjs
 
       - name: 安装 tauri-cli
         run: cargo install tauri-cli --version "^2" --locked

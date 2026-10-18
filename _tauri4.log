@@ -1,0 +1,17 @@
+﻿Tauri（windows-latest）	准备图标	﻿2026-10-18T04:01:43.5231823Z ##[group]Run mkdir -p desktop/tauri/src-tauri/icons
+Tauri（windows-latest）	准备图标	2026-10-18T04:01:43.5232432Z ^[[36;1mmkdir -p desktop/tauri/src-tauri/icons^[[0m
+Tauri（windows-latest）	准备图标	2026-10-18T04:01:43.5232827Z ^[[36;1mcp web/public/brand/logo.png desktop/tauri/src-tauri/icons/icon.png^[[0m
+Tauri（windows-latest）	准备图标	2026-10-18T04:01:43.5298519Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+Tauri（windows-latest）	准备图标	2026-10-18T04:01:43.5298941Z env:
+Tauri（windows-latest）	准备图标	2026-10-18T04:01:43.5299334Z   PNPM_HOME: C:\Users\runneradmin\setup-pnpm\node_modules\.bin
+Tauri（windows-latest）	准备图标	2026-10-18T04:01:43.5299794Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+Tauri（windows-latest）	准备图标	2026-10-18T04:01:43.5300295Z   CARGO_INCREMENTAL: 0
+Tauri（windows-latest）	准备图标	2026-10-18T04:01:43.5300530Z   CARGO_TERM_COLOR: always
+Tauri（windows-latest）	准备图标	2026-10-18T04:01:43.5300761Z   CACHE_ON_FAILURE: false
+Tauri（windows-latest）	准备图标	2026-10-18T04:01:43.5300984Z ##[endgroup]
+Tauri（windows-latest）	准备图标	2026-10-18T04:01:44.0945908Z ^[[31;1mNew-Item: ^[[0mD:\a\_temp\859dde13-3c14-415a-92c3-1e7663ccd908.ps1:2^[[0m
+Tauri（windows-latest）	准备图标	2026-10-18T04:01:44.0946979Z ^[[31;1m^[[0m^[[36;1mLine |^[[0m
+Tauri（windows-latest）	准备图标	2026-10-18T04:01:44.0947481Z ^[[31;1m^[[0m^[[36;1m^[[36;1m   2 | ^[[0m ^[[36;1mmkdir -p desktop/tauri/src-tauri/icons^[[0m
+Tauri（windows-latest）	准备图标	2026-10-18T04:01:44.0948174Z ^[[31;1m^[[0m^[[36;1m^[[36;1m^[[0m^[[36;1m^[[0m^[[36;1m     | ^[[31;1m ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^[[0m
+Tauri（windows-latest）	准备图标	2026-10-18T04:01:44.0949081Z ^[[31;1m^[[0m^[[36;1m^[[36;1m^[[0m^[[36;1m^[[0m^[[36;1m^[[31;1m^[[31;1m^[[36;1m     | ^[[31;1mAn item with the specified name D:\a\ZhuopuERW\ZhuopuERW\desktop\tauri\src-tauri\icons already exists.^[[0m
+Tauri（windows-latest）	准备图标	2026-10-18T04:01:44.1533840Z ##[error]Process completed with exit code 1.
