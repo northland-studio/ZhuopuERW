@@ -31,7 +31,7 @@ const isDev = !app.isPackaged;
 const DEV_URL = process.env.ZHUOPU_DEV_URL || 'http://127.0.0.1:5173';
 /** 本地开发时也可以直接跑构建产物（不启 Vite）：ZHUOPU_DEV_STATIC=1 */
 const loadMode = process.env.ZHUOPU_LOAD || 'static';
-const API_ORIGIN = process.env.ZHUOPU_API_ORIGIN || 'https://zhuopu.xuanjian.top';
+const API_ORIGIN = 'https://zhuopu.xuanjian.top'; // 写死 HK 后端，不再读环境变量
 
 const WEB_DIST = app.isPackaged
     ? path.join(process.resourcesPath, 'web-dist')
