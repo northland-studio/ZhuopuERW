@@ -2,6 +2,7 @@ import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'rea
 import { useNavigate, useParams } from 'react-router-dom';
 import { api, download } from '../lib/api';
 import { useToast } from '../lib/toast';
+import { desktop, hasDesktop } from '../lib/desktop';
 import '../styles/detail.css';
 
 /* ---------------- 类型（与后端 DTO 对齐） ---------------- */
@@ -144,6 +145,20 @@ export default function ReviewDetail() {
         }
     };
 
+    /** 把当前讲评写入程序目录的 review/（桌面端离线讲评用） */
+    const exportToLocal = async () => {
+        const bridge = desktop();
+        if (!bridge) { push('仅桌面客户端支持导出到本地', 'bad'); return; }
+        try {
+            const res = await api<Response>(`/api/reviews/${review.id}/export`, { raw: true });
+            const text = await res.text();
+            const saved = await bridge.review.write(review.title, text);
+            push(`已写入本地：${saved}`, 'ok');
+        } catch (e) {
+            push('导出到本地失败：' + (e as Error).message, 'bad');
+        }
+    };
+
     const share = async () => {
         try {
             const r = await api<{ url: string }>(`/api/reviews/${review.id}/share`, { method: 'POST' });
@@ -187,6 +202,11 @@ export default function ReviewDetail() {
                     <button className="btn btn-sm btn-ghost" onClick={() => void download(`/api/reviews/${review.id}/export`, `${review.title}.json`)}>
                         导出 JSON
                     </button>
+                    {hasDesktop() && (
+                        <button className="btn btn-sm btn-ghost" onClick={exportToLocal}>
+                            导出到本地
+                        </button>
+                    )}
                     <button className="btn btn-sm btn-ghost" onClick={share}>分享</button>
                     <button className="btn btn-sm btn-primary" onClick={() => analyzeAll(false)} disabled={analyzing}>
                         {analyzing ? '讲评中…' : 'AI 讲评全部'}

@@ -12,6 +12,7 @@ import Admin from './pages/Admin';
 import Share from './pages/Share';
 import Reset from './pages/Reset';
 import Forgot from './pages/Forgot';
+import LocalReviews from './pages/LocalReviews';
 
 const INTRO_KEY = 'zhuopu.intro.seen';
 
@@ -63,6 +64,7 @@ export function App() {
                             <Route path="/" element={<Home />} />
                             <Route path="/login" element={<Login />} />
                             <Route path="/forgot" element={<Forgot />} />
+                            <Route path="/local" element={<LocalReviews />} />
                             <Route path="/reset" element={<Reset />} />
                             <Route path="/share/:token" element={<Share />} />
                             <Route path="/reviews" element={<Protected><Reviews /></Protected>} />

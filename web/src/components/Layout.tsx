@@ -50,6 +50,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
                         <NavLink to="/reviews" className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}>
                             我的讲评
                         </NavLink>
+                        {hasDesktop() && (
+                            <NavLink to="/local" className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}>
+                                本地讲评
+                            </NavLink>
+                        )}
                         {user ? (
                             <div style={{ position: 'relative' }} ref={menuRef}>
                                 <button
@@ -114,6 +119,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
             {sheetOpen && (
                 <div className="nav-sheet">
                     <NavLink to="/reviews" className="nav-link" onClick={() => setSheetOpen(false)}>我的讲评</NavLink>
+                    {hasDesktop() && (
+                        <NavLink to="/local" className="nav-link" onClick={() => setSheetOpen(false)}>本地讲评</NavLink>
+                    )}
                     {user ? (
                         <>
                             <NavLink to="/profile" className="nav-link" onClick={() => setSheetOpen(false)}>用户中心</NavLink>
