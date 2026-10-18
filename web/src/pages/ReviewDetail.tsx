@@ -576,8 +576,10 @@ function ImportModal({
             form.append('file', file);
             const r = await api<{ ok: boolean; text: string; source: string; note: string }>('/api/upload/file', { form });
             setText(r.text);
-            push(`${r.note || '解析完成'}（${r.text.length} 字符）`, 'ok');
+            push(`${r.note || '解析完成'}（${r.text.length} 字符），正在自动切分…`, 'ok');
             setTab('paste');
+            // 全自动：解析完立刻切分并落库，老师不需要再点任何按钮
+            await split(r.text);
         } catch (e) {
             push((e as Error).message, 'bad');
         } finally {
@@ -585,13 +587,14 @@ function ImportModal({
         }
     };
 
-    const split = async () => {
-        if (text.trim().length < 10) { push('请先提供试卷内容', 'bad'); return; }
+    const split = async (overrideText?: string) => {
+        const source = (overrideText ?? text).trim();
+        if (source.length < 10) { push('请先提供试卷内容', 'bad'); return; }
         setBusy('正在切分原文与题目…');
         try {
             const r = await api<{ draft: { passages: { label: string; content: string }[]; questions: Question[]; notes: string } }>(
                 `/api/reviews/${reviewId}/split`,
-                { body: { text, type: type || undefined } }
+                { body: { text: source, type: type || undefined } }
             );
             // 全自动：切分结果直接落库，不再要求老师勾选确认
             setDraft(r.draft);
@@ -703,7 +706,7 @@ function ImportModal({
                                 </select>
                             </label>
                             <div style={{ flex: 1 }} />
-                            <button className="btn btn-primary" onClick={split} disabled={!!busy}>
+                            <button className="btn btn-primary" onClick={() => void split()} disabled={!!busy}>
                                 {busy || '开始切分'}
                             </button>
                         </div>

@@ -1,4 +1,4 @@
-name: 桌面端构建
+name: 桌面端构建（Tauri）
 
 on:
   push:
@@ -12,53 +12,6 @@ on:
     types: [published]
 
 jobs:
-  electron:
-    name: Electron（${{ matrix.os }}）
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [windows-latest, ubuntu-latest]
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-
-      - uses: pnpm/action-setup@v4
-
-      - name: 安装依赖并构建前端
-        run: |
-          pnpm install --frozen-lockfile --config.minimum-release-age=0
-          pnpm --filter zhuopu-web build
-          node scripts/copy-web-dist.mjs
-
-      - name: 安装 Electron 依赖
-        working-directory: desktop/electron
-        run: pnpm install --config.minimum-release-age=0
-
-      - name: 打包安装程序
-        working-directory: desktop/electron
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          if [ "$RUNNER_OS" = "Windows" ]; then
-            npx electron-builder --win --x64 --publish never
-          else
-            npx electron-builder --linux AppImage --publish never
-          fi
-        shell: bash
-
-      - name: 上传安装包
-        uses: actions/upload-artifact@v4
-        with:
-          name: electron-${{ runner.os }}
-          path: |
-            desktop/electron/release/**
-          if-no-files-found: error
-          retention-days: 30
-
   tauri:
     name: Tauri（${{ matrix.os }}）
     runs-on: ${{ matrix.os }}
