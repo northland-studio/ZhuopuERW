@@ -54,7 +54,8 @@ const TYPE_LABEL: Record<string, string> = {
 };
 
 export default function LocalReviews() {
-    const bridge = desktop();
+    // 桥接对象已做模块级缓存，引用稳定；这里再 memo 一次，确保 ref 不变
+    const bridge = useMemo(() => desktop(), []);
     const { user } = useAuth();
     const { push } = useToast();
     const navigate = useNavigate();
@@ -93,7 +94,9 @@ export default function LocalReviews() {
     useEffect(() => {
         if (hasDesktop()) void refresh();
         else setLoading(false);
-    }, [refresh]);
+        // 只在挂载时读一次；刷新走「刷新」按钮，避免依赖变化导致循环读取
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const remove = async (name: string) => {
         if (!bridge) return;

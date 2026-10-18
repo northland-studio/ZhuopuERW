@@ -68,15 +68,29 @@ function tauriBridge(): DesktopBridge {
     };
 }
 
+/**
+ * 桥接对象做模块级缓存：Tauri 的桥是现 new 的，如果每次调用都返回新对象，
+ * 引用会随渲染变化，导致依赖它的 useCallback/useEffect 无限重跑（表现为循环读取）。
+ */
+let cachedBridge: DesktopBridge | null | undefined;
+
 export function desktop(): DesktopBridge | null {
     if (typeof window === 'undefined') return null;
+    if (cachedBridge !== undefined) return cachedBridge;
+
     const b = (window as Win).zhuopuDesktop;
-    if (b) return b;
-    if (isTauri()) return tauriBridge();
+    if (b) {
+        cachedBridge = b;
+        return cachedBridge;
+    }
+    if (isTauri()) {
+        cachedBridge = tauriBridge();
+        return cachedBridge;
+    }
     // preload 未注入时的兜底：仍返回一个壳，让标题栏渲染出来
     if (shellFlag()) {
         const noop = () => {};
-        return {
+        cachedBridge = {
             isDesktop: true,
             platform: '',
             minimize: noop,
@@ -93,7 +107,9 @@ export function desktop(): DesktopBridge | null {
             },
             pickFile: async () => null
         };
+        return cachedBridge;
     }
+    cachedBridge = null;
     return null;
 }
 
