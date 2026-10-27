@@ -1,6 +1,6 @@
 {
   "productName": "琢璞英语讲评工作台",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "identifier": "top.xuanjian.zhuopu",
   "build": {
     "beforeDevCommand": "",

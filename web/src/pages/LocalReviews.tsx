@@ -27,6 +27,9 @@ interface LocalQuestion {
     options: { label: string; text: string }[];
     answer: string;
     passageIndex?: number | null;
+    /** 原文出处偏移：离线页靠它做「原文对照」高亮 */
+    sourceStart?: number | null;
+    sourceEnd?: number | null;
     analysis?: Record<string, unknown>;
 }
 interface LocalFile {
@@ -55,24 +58,53 @@ function toReview(file: LocalFile, name: string): Review {
         id: i + 1,
         ordinal: i + 1,
         label: p.label || `P${i + 1}`,
-        content: p.content,
+        content: p.content ?? '',
         meta: { vocabulary: p.vocabulary ?? [], longSentences: p.longSentences ?? [] }
     }));
 
     const questions: Question[] = (file.questions ?? []).map((q, i) => {
         const analysis = (q.analysis ?? {}) as Question['analysis'];
         const analyzed = Object.keys(analysis).length > 0;
+        const passageId = q.passageIndex ? passages[q.passageIndex - 1]?.id ?? null : passages[0]?.id ?? null;
+        const passageContent = passages.find((p) => p.id === passageId)?.content ?? '';
+
+        // 原文对照：优先用导出文件里的偏移；没有就用 sourceQuote 在原文里定位；
+        // 再没有就按题号（空位题）在原文里找那句
+        let start = typeof q.sourceStart === 'number' ? q.sourceStart : null;
+        let end = typeof q.sourceEnd === 'number' ? q.sourceEnd : null;
+        if (start == null) {
+            const quote = (analysis as { sourceQuote?: string }).sourceQuote;
+            if (quote && passageContent) {
+                const idx = passageContent.indexOf(quote);
+                if (idx >= 0) { start = idx; end = idx + quote.length; }
+            }
+        }
+        if (start == null && passageContent) {
+            const label = (q.numberLabel ?? '').trim();
+            if (label) {
+                const re = new RegExp(`(?:^|[\\s\\u3000])${label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?=[\\s\\u3000]|$)`);
+                const m = re.exec(passageContent);
+                if (m) {
+                    // 取所在句子
+                    const from = passageContent.lastIndexOf('.', m.index) + 1 || 0;
+                    const dot = passageContent.indexOf('.', m.index + m[0].length);
+                    start = from;
+                    end = dot > 0 ? dot + 1 : Math.min(passageContent.length, m.index + 120);
+                }
+            }
+        }
+
         return {
             id: i + 1,
-            passageId: q.passageIndex ? passages[q.passageIndex - 1]?.id ?? null : passages[0]?.id ?? null,
+            passageId,
             ordinal: i + 1,
             type: (q.type as Question['type']) ?? 'reading',
             numberLabel: q.numberLabel ?? String(i + 1),
             stem: q.stem ?? '',
             options: q.options ?? [],
             answer: q.answer ?? '',
-            sourceStart: null,
-            sourceEnd: null,
+            sourceStart: start,
+            sourceEnd: end,
             analysis,
             analyzedAt: analyzed ? 'analyzed' : null
         };

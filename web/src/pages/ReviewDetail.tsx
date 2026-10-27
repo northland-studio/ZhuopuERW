@@ -303,8 +303,10 @@ export function collectVocab(review: Review): VocabItem[] {
     const related = review.questions;
     for (const q of related) {
         for (const v of q.analysis?.vocabulary ?? []) {
-            const key = v.word.toLowerCase();
-            if (!map.has(key) && v.word.length > 1) map.set(key, v);
+            // 防御：离线文件里可能出现缺 word 的脏数据，不能让整页崩掉
+            if (!v?.word) continue;
+            const key = String(v.word).toLowerCase();
+            if (!map.has(key) && String(v.word).length > 1) map.set(key, v);
         }
     }
     // 第一次解析就把词汇存进了 passages.meta，这里一并收进来
@@ -318,8 +320,9 @@ export function collectVocab(review: Review): VocabItem[] {
         }
     }
     for (const v of review.vocab ?? []) {
-        const key = v.word.toLowerCase();
-        if (!map.has(key) && v.word.length > 1) map.set(key, v);
+        if (!v?.word) continue;
+        const key = String(v.word).toLowerCase();
+        if (!map.has(key) && String(v.word).length > 1) map.set(key, v);
     }
     return [...map.values()];
 }
