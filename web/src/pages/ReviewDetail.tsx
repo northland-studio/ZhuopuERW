@@ -7,11 +7,11 @@ import '../styles/detail.css';
 
 /* ---------------- 类型（与后端 DTO 对齐） ---------------- */
 
-interface Option { label: string; text: string }
-interface VocabItem { word: string; pos: string; meanings: string[]; usage: string; context?: string }
-interface LongSentence { sentence: string; analysis: string; translation: string }
-interface OptionGloss { label: string; text: string; pos: string; meaning: string; usage: string }
-interface Analysis {
+export interface Option { label: string; text: string }
+export interface VocabItem { word: string; pos: string; meanings: string[]; usage: string; context?: string }
+export interface LongSentence { sentence: string; analysis: string; translation: string }
+export interface OptionGloss { label: string; text: string; pos: string; meaning: string; usage: string }
+export interface Analysis {
     skill?: string;
     reasoning?: string;
     answer?: string;
@@ -22,7 +22,7 @@ interface Analysis {
     sourceQuote?: string;
     teachingTips?: string[];
 }
-interface Question {
+export interface Question {
     id: number;
     passageId: number | null;
     ordinal: number;
@@ -36,8 +36,8 @@ interface Question {
     analysis: Analysis;
     analyzedAt: string | null;
 }
-interface Passage { id: number; ordinal: number; label: string; content: string }
-interface Review {
+export interface Passage { id: number; ordinal: number; label: string; content: string; meta?: Record<string, unknown> }
+export interface Review {
     id: number;
     title: string;
     kind: 'review' | 'single';
@@ -48,7 +48,7 @@ interface Review {
     questions: Question[];
 }
 
-const TYPE_LABEL: Record<Question['type'], string> = {
+export const TYPE_LABEL: Record<Question['type'], string> = {
     cloze: '完形填空',
     reading: '阅读理解',
     seven_five: '七选五',
@@ -296,7 +296,7 @@ export default function ReviewDetail() {
 
 /* ---------------- 原文渲染：高亮 + 词汇虚线下划线 ---------------- */
 
-function collectVocab(review: Review): VocabItem[] {
+export function collectVocab(review: Review): VocabItem[] {
     const map = new Map<string, VocabItem>();
     // 长文本常见情况：只有部分题目讲评过，词汇散在不同篇里。
     // 这里统一取「整份讲评」的词汇并集，保证任何一篇原文都能看到勾画。
@@ -324,7 +324,7 @@ function collectVocab(review: Review): VocabItem[] {
     return [...map.values()];
 }
 
-function PassageText({
+export function PassageText({
     content, highlight, vocab, onVocab
 }: {
     content: string;
@@ -406,7 +406,7 @@ function PassageText({
     );
 }
 
-function VocabPopover({ item, x, y, onClose }: { item: VocabItem; x: number; y: number; onClose: () => void }) {
+export function VocabPopover({ item, x, y, onClose }: { item: VocabItem; x: number; y: number; onClose: () => void }) {
     const ref = useRef<HTMLDivElement | null>(null);
     useEffect(() => {
         const onDown = (e: MouseEvent) => {
@@ -438,7 +438,7 @@ function VocabPopover({ item, x, y, onClose }: { item: VocabItem; x: number; y: 
 
 /* ---------------- 单个题目卡片 ---------------- */
 
-function QuestionCard({
+export function QuestionCard({
     q, active, onSelect, onAnalyze, onVocab
 }: {
     q: Question;
@@ -799,7 +799,7 @@ function ImportModal({
 
 /* ---------------- 底部：按原文分组长难句 ---------------- */
 
-function LongSentenceBar({ review, onJump }: { review: Review; onJump: (index: number) => void }) {
+export function LongSentenceBar({ review, onJump }: { review: Review; onJump: (index: number) => void }) {
     const [showAnswer, setShowAnswer] = useState(false);
     // 每篇原文的长难句来自 passages.meta.longSentences（讲评时按篇写入），
     // 没有的则回落到整份讲评的 longSentences，保证总有内容可看。

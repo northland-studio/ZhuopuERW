@@ -4,27 +4,30 @@ import { api } from '../lib/api';
 import { useAuth } from '../lib/auth';
 import { useToast } from '../lib/toast';
 import { desktop, hasDesktop } from '../lib/desktop';
+import {
+    collectVocab,
+    LongSentenceBar,
+    PassageText,
+    QuestionCard,
+    VocabPopover,
+    type Review,
+    type Question,
+    type VocabItem
+} from './ReviewDetail';
 import '../styles/detail.css';
 
 /* ---------------- 文件版讲评的 JSON 结构（与后端导出格式一致） ---------------- */
 
-interface VocabItem { word: string; pos?: string; meanings?: string[]; usage?: string; context?: string }
-interface LongSentence { sentence: string; analysis?: string; translation?: string }
+interface LocalVocabItem { word: string; pos?: string; meanings?: string[]; usage?: string; context?: string }
+interface LocalLong { sentence: string; analysis?: string; translation?: string }
 interface LocalQuestion {
     type: string;
     numberLabel: string;
     stem: string;
     options: { label: string; text: string }[];
     answer: string;
-    analysis?: {
-        skill?: string;
-        reasoning?: string;
-        distractors?: { label: string; why: string }[];
-        vocabulary?: VocabItem[];
-        longSentences?: LongSentence[];
-        optionGlosses?: { label: string; text?: string; pos?: string; meaning?: string; usage?: string }[];
-        teachingTips?: string[];
-    };
+    passageIndex?: number | null;
+    analysis?: Record<string, unknown>;
 }
 interface LocalFile {
     format?: string;
@@ -32,9 +35,9 @@ interface LocalFile {
     title?: string;
     kind?: 'review' | 'single';
     summary?: string;
-    vocab?: VocabItem[];
-    longSentences?: LongSentence[];
-    passages?: { label?: string; content: string; vocabulary?: VocabItem[]; longSentences?: LongSentence[] }[];
+    vocab?: LocalVocabItem[];
+    longSentences?: LocalLong[];
+    passages?: { label?: string; content: string; vocabulary?: LocalVocabItem[]; longSentences?: LocalLong[] }[];
     questions?: LocalQuestion[];
 }
 
@@ -46,15 +49,48 @@ interface FileEntry {
     parseError?: string;
 }
 
-const TYPE_LABEL: Record<string, string> = {
-    cloze: '完形填空',
-    reading: '阅读理解',
-    seven_five: '七选五',
-    grammar: '语法填空'
-};
+/** 把本地 JSON 映射成在线讲评页使用的 Review 结构（id 用序号占位） */
+function toReview(file: LocalFile, name: string): Review {
+    const passages = (file.passages ?? []).map((p, i) => ({
+        id: i + 1,
+        ordinal: i + 1,
+        label: p.label || `P${i + 1}`,
+        content: p.content,
+        meta: { vocabulary: p.vocabulary ?? [], longSentences: p.longSentences ?? [] }
+    }));
+
+    const questions: Question[] = (file.questions ?? []).map((q, i) => {
+        const analysis = (q.analysis ?? {}) as Question['analysis'];
+        const analyzed = Object.keys(analysis).length > 0;
+        return {
+            id: i + 1,
+            passageId: q.passageIndex ? passages[q.passageIndex - 1]?.id ?? null : passages[0]?.id ?? null,
+            ordinal: i + 1,
+            type: (q.type as Question['type']) ?? 'reading',
+            numberLabel: q.numberLabel ?? String(i + 1),
+            stem: q.stem ?? '',
+            options: q.options ?? [],
+            answer: q.answer ?? '',
+            sourceStart: null,
+            sourceEnd: null,
+            analysis,
+            analyzedAt: analyzed ? 'analyzed' : null
+        };
+    });
+
+    return {
+        id: 0,
+        title: file.title || name,
+        kind: file.kind ?? 'review',
+        summary: file.summary ?? '',
+        vocab: (file.vocab ?? []) as VocabItem[],
+        longSentences: (file.longSentences ?? []) as Review['longSentences'],
+        passages,
+        questions
+    };
+}
 
 export default function LocalReviews() {
-    // 桥接对象已做模块级缓存，引用稳定；这里再 memo 一次，确保 ref 不变
     const bridge = useMemo(() => desktop(), []);
     const { user } = useAuth();
     const { push } = useToast();
@@ -63,8 +99,9 @@ export default function LocalReviews() {
     const [files, setFiles] = useState<FileEntry[]>([]);
     const [loading, setLoading] = useState(true);
     const [active, setActive] = useState<FileEntry | null>(null);
-    const [openQ, setOpenQ] = useState<number | null>(null);
-    const [showAnswer, setShowAnswer] = useState(false);
+    const [activeQ, setActiveQ] = useState<number | null>(null);
+    const [passageIdx, setPassageIdx] = useState(0);
+    const [pop, setPop] = useState<{ item: VocabItem; x: number; y: number } | null>(null);
 
     const refresh = useCallback(async () => {
         if (!bridge) return;
@@ -76,8 +113,7 @@ export default function LocalReviews() {
                     try {
                         const text = await bridge.review.read(f.name);
                         if (!text) return { ...f, parseError: '文件为空' };
-                        const data = JSON.parse(text) as LocalFile;
-                        return { ...f, data };
+                        return { ...f, data: JSON.parse(text) as LocalFile };
                     } catch (e) {
                         return { ...f, parseError: (e as Error).message };
                     }
@@ -94,9 +130,16 @@ export default function LocalReviews() {
     useEffect(() => {
         if (hasDesktop()) void refresh();
         else setLoading(false);
-        // 只在挂载时读一次；刷新走「刷新」按钮，避免依赖变化导致循环读取
+        // 只在挂载时读一次，刷新走按钮，避免循环读取
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const review = useMemo(() => (active?.data ? toReview(active.data, active.name) : null), [active]);
+
+    useEffect(() => {
+        if (review?.questions.length) setActiveQ(review.questions[0]!.id);
+        setPassageIdx(0);
+    }, [review]);
 
     const remove = async (name: string) => {
         if (!bridge) return;
@@ -111,8 +154,8 @@ export default function LocalReviews() {
         }
     };
 
-    const importToCloud = async (entry: FileEntry) => {
-        if (!entry.data) { push('文件解析失败，无法导入', 'bad'); return; }
+    const importToCloud = async (entry: FileEntry | null) => {
+        if (!entry?.data) { push('文件解析失败，无法导入', 'bad'); return; }
         if (!user) { push('请先登录后再导入云端', 'bad'); navigate('/login'); return; }
         try {
             const r = await api<{ id: number }>('/api/reviews/import', { body: { file: entry.data } });
@@ -123,7 +166,6 @@ export default function LocalReviews() {
         }
     };
 
-    /* ---------------- 非桌面环境 ---------------- */
     if (!hasDesktop()) {
         return (
             <div className="page page-narrow" style={{ paddingTop: 64 }}>
@@ -141,52 +183,43 @@ export default function LocalReviews() {
         );
     }
 
-    const info = bridge?.info ? null : null; // 占位，避免未使用告警
-
-    return (
-        <div className="page" style={{ paddingTop: 26 }}>
-            <div className="spread" style={{ marginBottom: 20 }}>
-                <div>
-                    <h1 style={{ fontSize: 26 }}>本地讲评</h1>
-                    <p className="tiny muted" style={{ marginTop: 6 }}>
-                        读取程序目录 <code className="mono">review</code> 文件夹里的 JSON，断网也能讲评。
-                    </p>
+    /* ---------------- 列表视图 ---------------- */
+    if (!review) {
+        return (
+            <div className="page" style={{ paddingTop: 26 }}>
+                <div className="spread" style={{ marginBottom: 20 }}>
+                    <div>
+                        <h1 style={{ fontSize: 26 }}>本地讲评</h1>
+                        <p className="tiny muted" style={{ marginTop: 6 }}>
+                            读取程序目录 <code className="mono">review</code> 文件夹里的 JSON，断网也能讲评。
+                        </p>
+                    </div>
+                    <div className="row" style={{ gap: 8, flexWrap: 'wrap' }}>
+                        <button className="btn btn-sm btn-ghost" onClick={() => void refresh()} disabled={loading}>
+                            {loading ? '读取中…' : '刷新'}
+                        </button>
+                        <button className="btn btn-sm btn-ghost" onClick={() => void bridge?.review.reveal()}>
+                            打开文件夹
+                        </button>
+                    </div>
                 </div>
-                <div className="row" style={{ gap: 8, flexWrap: 'wrap' }}>
-                    <button className="btn btn-sm btn-ghost" onClick={() => void refresh()} disabled={loading}>
-                        {loading ? '读取中…' : '刷新'}
-                    </button>
-                    <button className="btn btn-sm btn-ghost" onClick={() => void bridge?.review.reveal()}>
-                        打开文件夹
-                    </button>
-                    <button className="btn btn-sm btn-primary" onClick={() => navigate('/reviews')}>
-                        我的讲评
-                    </button>
-                </div>
-            </div>
 
-            {loading && <div className="skeleton" style={{ height: 120, borderRadius: 16 }} />}
+                {loading && <div className="skeleton" style={{ height: 120, borderRadius: 16 }} />}
 
-            {!loading && files.length === 0 && (
-                <div className="card card-pad" style={{ textAlign: 'center', padding: 40 }}>
-                    <p className="muted" style={{ fontSize: 13.5 }}>
-                        <code className="mono">review</code> 文件夹里还没有 JSON。
-                    </p>
-                    <p className="tiny muted" style={{ marginTop: 8, lineHeight: 1.9 }}>
-                        在「我的讲评」里打开一条讲评，点「导出到本地」即可写入这个文件夹。
-                    </p>
-                    <button className="btn btn-sm btn-quiet" style={{ marginTop: 16 }} onClick={() => void bridge?.review.reveal()}>
-                        打开 review 文件夹
-                    </button>
-                </div>
-            )}
+                {!loading && files.length === 0 && (
+                    <div className="card card-pad" style={{ textAlign: 'center', padding: 40 }}>
+                        <p className="muted" style={{ fontSize: 13.5 }}>
+                            <code className="mono">review</code> 文件夹里还没有 JSON。
+                        </p>
+                        <p className="tiny muted" style={{ marginTop: 8, lineHeight: 1.9 }}>
+                            在「我的讲评」里打开一条讲评，点「导出到本地」即可写入这个文件夹。
+                        </p>
+                    </div>
+                )}
 
-            {!loading && files.length > 0 && (
-                <div className="stack" style={{ gap: 10 }}>
-                    {files.map((f) => {
-                        const qn = f.data?.questions?.length ?? 0;
-                        const pn = f.data?.passages?.length ?? 0;
-                        return (
+                {!loading && files.length > 0 && (
+                    <div className="stack" style={{ gap: 10 }}>
+                        {files.map((f) => (
                             <div key={f.name} className="card" style={{ padding: '14px 18px', display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
                                 <div style={{ flex: 1, minWidth: 220 }}>
                                     <div style={{ fontSize: 15.5, fontWeight: 600, color: 'var(--ink-900)' }}>
@@ -195,24 +228,16 @@ export default function LocalReviews() {
                                     <div className="tiny muted" style={{ marginTop: 4 }}>
                                         {f.parseError
                                             ? `无法解析：${f.parseError}`
-                                            : `${pn} 篇原文 · ${qn} 题 · ${(f.size / 1024).toFixed(1)} KB`}
+                                            : `${f.data?.passages?.length ?? 0} 篇原文 · ${f.data?.questions?.length ?? 0} 题 · ${(f.size / 1024).toFixed(1)} KB`}
                                         {' · '}
                                         {new Date(f.mtime).toLocaleString()}
                                     </div>
                                 </div>
                                 <div className="row" style={{ gap: 6 }}>
-                                    <button
-                                        className="btn btn-sm btn-quiet"
-                                        disabled={!!f.parseError}
-                                        onClick={() => { setActive(f); setOpenQ(0); setShowAnswer(false); }}
-                                    >
+                                    <button className="btn btn-sm btn-quiet" disabled={!!f.parseError} onClick={() => setActive(f)}>
                                         打开
                                     </button>
-                                    <button
-                                        className="btn btn-sm btn-ghost"
-                                        disabled={!!f.parseError}
-                                        onClick={() => void importToCloud(f)}
-                                    >
+                                    <button className="btn btn-sm btn-ghost" disabled={!!f.parseError} onClick={() => void importToCloud(f)}>
                                         导入云端
                                     </button>
                                     <button className="btn btn-sm btn-ghost" style={{ color: 'var(--danger)' }} onClick={() => void remove(f.name)}>
@@ -220,186 +245,102 @@ export default function LocalReviews() {
                                     </button>
                                 </div>
                             </div>
-                        );
-                    })}
-                </div>
-            )}
+                        ))}
+                    </div>
+                )}
+            </div>
+        );
+    }
 
-            {active?.data && (
-                <LocalViewer
-                    file={active.data}
-                    openQ={openQ}
-                    setOpenQ={setOpenQ}
-                    showAnswer={showAnswer}
-                    setShowAnswer={setShowAnswer}
-                    onClose={() => setActive(null)}
-                />
-            )}
+    /* ---------------- 离线讲评视图：与在线页同一套组件 ---------------- */
+    const passage = review.passages[passageIdx] ?? review.passages[0];
+    const current = review.questions.find((q) => q.id === activeQ) ?? null;
+    const questionsOfPassage = review.questions.filter(
+        (q) => !passage || q.passageId === passage.id || q.passageId === null
+    );
+    const vocabAll = collectVocab(review);
+
+    return (
+        <div className="rd">
+            <header className="rd-head">
+                <div style={{ flex: 1, minWidth: 0 }}>
+                    <h1 className="rd-title" style={{ cursor: 'default' }}>{review.title}</h1>
+                    <div className="tiny muted" style={{ marginTop: 4 }}>
+                        本地文件 · {review.questions.length} 题 · {review.passages.length} 篇原文 ·{' '}
+                        {review.questions.filter((q) => q.analyzedAt).length} 题已讲评
+                    </div>
+                </div>
+                <div className="row" style={{ gap: 8, flexWrap: 'wrap' }}>
+                    <button className="btn btn-sm btn-ghost" onClick={() => void bridge?.review.reveal()}>打开文件夹</button>
+                    <button className="btn btn-sm btn-ghost" onClick={() => void importToCloud(active)}>导入云端</button>
+                    <button className="btn btn-sm btn-primary" onClick={() => setActive(null)}>返回列表</button>
+                </div>
+            </header>
+
+            <section className="rd-panel">
+                <div className="rd-panel-head">
+                    <span>阅读原文</span>
+                    <span className="row" style={{ gap: 8 }}>
+                        {current?.sourceStart != null && <span className="tag tag-brand">已定位第 {current.numberLabel} 题</span>}
+                        {vocabAll.length > 0 ? (
+                            <span className="tag">{vocabAll.length} 个重点词（虚线下划线可点）</span>
+                        ) : (
+                            <span className="tag tag-warn">这份文件没有词汇数据</span>
+                        )}
+                    </span>
+                </div>
+                {review.passages.length > 1 && (
+                    <div className="rd-passage-tabs">
+                        {review.passages.map((p, i) => (
+                            <button
+                                key={p.id}
+                                className={`rd-passage-tab ${i === passageIdx ? 'is-active' : ''}`}
+                                onClick={() => setPassageIdx(i)}
+                            >
+                                {p.label || `P${i + 1}`}
+                            </button>
+                        ))}
+                    </div>
+                )}
+                {passage ? (
+                    <div className="rd-text">
+                        <PassageText
+                            content={passage.content}
+                            highlight={current && current.passageId === passage.id ? { start: current.sourceStart, end: current.sourceEnd } : null}
+                            vocab={vocabAll}
+                            onVocab={(item, e) => setPop({ item, x: e.clientX, y: e.clientY })}
+                        />
+                    </div>
+                ) : (
+                    <div className="rd-empty">这份文件没有原文。</div>
+                )}
+            </section>
+
+            <section className="rd-panel">
+                <div className="rd-panel-head">
+                    <span>题目列表（{questionsOfPassage.length} 题）</span>
+                    <span className="tag">离线只读</span>
+                </div>
+                <div className="rd-questions">
+                    {questionsOfPassage.length === 0 && <div className="rd-empty">这篇原文还没有题目。</div>}
+                    {questionsOfPassage.map((q) => (
+                        <QuestionCard
+                            key={q.id}
+                            q={q}
+                            active={q.id === activeQ}
+                            onSelect={() => setActiveQ(q.id)}
+                            onAnalyze={() => push('离线模式下不能重新讲评，请导入云端后再讲评', 'bad')}
+                            onVocab={(item, e) => setPop({ item, x: e.clientX, y: e.clientY })}
+                        />
+                    ))}
+                </div>
+            </section>
+
+            {pop && <VocabPopover {...pop} onClose={() => setPop(null)} />}
+
+            <LongSentenceBar review={review} onJump={(idx) => setPassageIdx(idx)} />
         </div>
     );
 }
 
-/* ---------------- 离线只读查看器 ---------------- */
-
-function LocalViewer({
-    file, openQ, setOpenQ, showAnswer, setShowAnswer, onClose
-}: {
-    file: LocalFile;
-    openQ: number | null;
-    setOpenQ: (n: number | null) => void;
-    showAnswer: boolean;
-    setShowAnswer: (v: boolean) => void;
-    onClose: () => void;
-}) {
-    const [passageIdx, setPassageIdx] = useState(0);
-    const passages = file.passages ?? [];
-    const questions = file.questions ?? [];
-    const passage = passages[passageIdx];
-
-    const vocab = useMemo(() => {
-        const map = new Map<string, VocabItem>();
-        for (const v of file.vocab ?? []) if (v?.word) map.set(v.word.toLowerCase(), v);
-        for (const p of passages) for (const v of p.vocabulary ?? []) if (v?.word) map.set(v.word.toLowerCase(), v);
-        for (const q of questions) for (const v of q.analysis?.vocabulary ?? []) if (v?.word) map.set(v.word.toLowerCase(), v);
-        return [...map.values()];
-    }, [file, passages, questions]);
-
-    return (
-        <section style={{ marginTop: 26 }}>
-            <div className="spread" style={{ marginBottom: 12 }}>
-                <h2 style={{ fontSize: 18 }}>{file.title || '本地讲评'}</h2>
-                <div className="row" style={{ gap: 8 }}>
-                    <button className="btn btn-sm btn-quiet" onClick={() => setShowAnswer(!showAnswer)}>
-                        {showAnswer ? '隐藏答案' : '显示答案'}
-                    </button>
-                    <button className="btn btn-sm btn-ghost" onClick={onClose}>关闭</button>
-                </div>
-            </div>
-
-            {file.summary && (
-                <p className="tiny muted" style={{ marginBottom: 14, lineHeight: 1.9 }}>{file.summary}</p>
-            )}
-
-            <div className="rd" style={{ padding: 0 }}>
-                <section className="rd-panel">
-                    <div className="rd-panel-head">
-                        <span>阅读原文</span>
-                        <span className="tag">{vocab.length} 个重点词</span>
-                    </div>
-                    {passages.length > 1 && (
-                        <div className="rd-passage-tabs">
-                            {passages.map((p, i) => (
-                                <button
-                                    key={i}
-                                    className={`rd-passage-tab ${i === passageIdx ? 'is-active' : ''}`}
-                                    onClick={() => setPassageIdx(i)}
-                                >
-                                    {p.label || `P${i + 1}`}
-                                </button>
-                            ))}
-                        </div>
-                    )}
-                    <div className="rd-text">{passage?.content || '（没有原文）'}</div>
-                </section>
-
-                <section className="rd-panel">
-                    <div className="rd-panel-head">
-                        <span>题目列表（{questions.length} 题）</span>
-                    </div>
-                    <div className="rd-questions">
-                        {questions.map((q, i) => {
-                            const open = openQ === i;
-                            const a = q.analysis ?? {};
-                            const answer = (a as { answer?: string }).answer || q.answer || '';
-                            return (
-                                <div key={i} className={`rd-q ${open ? 'is-active' : ''}`}>
-                                    <button className="rd-q-head" onClick={() => setOpenQ(open ? null : i)}>
-                                        <span className="rd-q-num">{q.numberLabel || i + 1}</span>
-                                        <span style={{ flex: 1, minWidth: 0 }}>
-                                            <span className="tiny rd-q-stem" style={{ display: 'block', color: 'var(--ink-700)' }}>
-                                                {q.stem ? q.stem.slice(0, 42) : TYPE_LABEL[q.type] || q.type}
-                                            </span>
-                                            <span className="rd-q-type">{TYPE_LABEL[q.type] || q.type}</span>
-                                        </span>
-                                    </button>
-
-                                    {open && (
-                                        <div className="rd-q-body">
-                                            {q.stem && q.type === 'reading' && (
-                                                <p style={{ fontSize: 14, marginTop: 12, lineHeight: 1.75 }}>{q.stem}</p>
-                                            )}
-                                            {q.options?.length > 0 && (
-                                                <div className="rd-options-scroll" style={{ marginTop: 10 }}>
-                                                    {q.options.map((o) => (
-                                                        <div key={o.label} className={`rd-option ${showAnswer && o.label === answer ? 'is-answer' : ''}`}>
-                                                            <span className="rd-option-label">{o.label}.</span>
-                                                            <span className="rd-option-scroll">{o.text}</span>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            )}
-                                            {showAnswer && answer && (
-                                                <div className="row" style={{ gap: 8, marginTop: 10 }}>
-                                                    <span className="tag tag-ok">答案 {answer}</span>
-                                                </div>
-                                            )}
-                                            {a.skill && (
-                                                <div className="rd-block">
-                                                    <div className="rd-block-title">考点</div>
-                                                    <p style={{ fontSize: 13.5, fontWeight: 600 }}>{a.skill}</p>
-                                                </div>
-                                            )}
-                                            {a.reasoning && (
-                                                <div className="rd-block">
-                                                    <div className="rd-block-title">讲评</div>
-                                                    <p className="rd-reasoning">{a.reasoning}</p>
-                                                </div>
-                                            )}
-                                            {!!a.distractors?.length && (
-                                                <div className="rd-block">
-                                                    <div className="rd-block-title">干扰项</div>
-                                                    {a.distractors.map((d, k) => (
-                                                        <p key={k} className="tiny" style={{ lineHeight: 1.7 }}>
-                                                            <strong>{d.label}.</strong> {d.why}
-                                                        </p>
-                                                    ))}
-                                                </div>
-                                            )}
-                                            {!!a.vocabulary?.length && (
-                                                <div className="rd-block">
-                                                    <div className="rd-block-title">重难点词汇</div>
-                                                    <div className="rd-chips">
-                                                        {a.vocabulary.map((v) => (
-                                                            <span key={v.word} className="rd-vocab-chip" title={v.meanings?.join('；')}>
-                                                                {v.word}
-                                                                {v.pos && <em>{v.pos}</em>}
-                                                            </span>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            )}
-                                            {!!a.longSentences?.length && (
-                                                <div className="rd-block">
-                                                    <div className="rd-block-title">长难句翻译</div>
-                                                    {a.longSentences.map((s, k) => (
-                                                        <div className="rd-long" key={k}>
-                                                            <div className="rd-long-en">{s.sentence}</div>
-                                                            {showAnswer && s.analysis && <div style={{ marginTop: 6 }}>{s.analysis}</div>}
-                                                            {showAnswer && s.translation && (
-                                                                <div style={{ marginTop: 4, color: 'var(--ink-500)' }}>{s.translation}</div>
-                                                            )}
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            )}
-                                        </div>
-                                    )}
-                                </div>
-                            );
-                        })}
-                    </div>
-                </section>
-            </div>
-        </section>
-    );
-}
+export type { LocalFile };

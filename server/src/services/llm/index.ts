@@ -155,21 +155,33 @@ export async function chatJson<T = unknown>(opts: ChatOptions): Promise<ChatResu
     let completionTokens = 0;
     let totalTokens = 0;
 
-    for (let attempt = 1; attempt <= 2; attempt++) {
-        const body = { ...baseBody, ...(jsonMode ? { response_format: { type: 'json_object' } } : {}) };
+    for (let attempt = 1; attempt <= 3; attempt++) {
+        // 第 3 次尝试去掉 response_format：部分推理模型不支持 json_object，
+        // 会返回空 content（思考 token 把 budget 吃光）
+        const useJsonFormat = jsonMode && attempt < 3;
+        const body = { ...baseBody, ...(useJsonFormat ? { response_format: { type: 'json_object' } } : {}) };
         const started = Date.now();
         try {
             const r = await postChat(cfg.baseUrl, cfg.apiKey, body, timeoutMs);
             latencyMs = Date.now() - started;
             if (r.status >= 200 && r.status < 300) {
-                const content: string = r.json?.choices?.[0]?.message?.content ?? '';
+                const choice = r.json?.choices?.[0] ?? {};
+                const content: string = choice?.message?.content ?? '';
+                const finishReason: string = choice?.finish_reason ?? '';
                 const u = r.json?.usage ?? {};
                 promptTokens = Number(u.prompt_tokens ?? 0);
                 completionTokens = Number(u.completion_tokens ?? 0);
                 totalTokens = Number(u.total_tokens ?? (promptTokens + completionTokens));
                 if (!content.trim()) {
-                    lastError = '模型返回空内容';
+                    lastError = finishReason === 'length'
+                        ? `输出被 max_tokens(${baseBody.max_tokens}) 截断（模型思考占满预算），本次无正文`
+                        : `模型返回空内容（finish_reason=${finishReason || '未知'}）`;
+                    logger.warn(`${provider}/${model} 空正文，finish_reason=${finishReason}，准备重试`);
                     continue;
+                }
+                if (finishReason === 'length') {
+                    // 正文拿到了但被截断，JSON 必然不完整：直接失败并给明确原因
+                    throw Object.assign(new Error(`模型输出被截断（finish_reason=length，max_tokens=${baseBody.max_tokens}），请缩小单次输入`), { truncated: true });
                 }
                 const data = jsonMode ? (extractJson(content) as T) : (content as unknown as T);
                 recordUsage({ userId: opts.userId, provider, model, purpose: opts.purpose || '', prompt: promptTokens, completion: completionTokens, total: totalTokens, latencyMs, ok: true });
@@ -180,6 +192,11 @@ export async function chatJson<T = unknown>(opts: ChatOptions): Promise<ChatResu
             if (r.status === 401 || r.status === 403) break;
         } catch (e) {
             latencyMs = Date.now() - started;
+            if ((e as { truncated?: boolean }).truncated) {
+                lastError = (e as Error).message;
+                recordUsage({ userId: opts.userId, provider, model, purpose: opts.purpose || '', prompt: promptTokens, completion: completionTokens, total: totalTokens, latencyMs, ok: false, error: lastError });
+                throw Object.assign(new Error(`模型调用失败：${lastError}`), { status: 413 });
+            }
             lastError = (e as Error).name === 'AbortError' ? `请求超时（${timeoutMs}ms）` : (e as Error).message;
         }
         logger.warn(`${provider}/${model} 第 ${attempt} 次调用失败：${lastError}`);

@@ -365,7 +365,16 @@ export function exportReview(userId: number, id: number): ExportFile | null {
         summary: review.summary,
         vocab: review.vocab,
         longSentences: review.longSentences,
-        passages: review.passages.map((p) => ({ label: p.label, content: p.content })),
+        // 篇级词汇与长难句也导出：离线客户端要靠它画下划线与底部汇总栏
+        passages: review.passages.map((p) => {
+            const meta = p.meta as { vocabulary?: unknown[]; longSentences?: unknown[] } | undefined;
+            return {
+                label: p.label,
+                content: p.content,
+                vocabulary: Array.isArray(meta?.vocabulary) ? meta!.vocabulary : [],
+                longSentences: Array.isArray(meta?.longSentences) ? meta!.longSentences : []
+            };
+        }),
         questions: review.questions.map((q) => ({
             type: q.type,
             numberLabel: q.numberLabel,

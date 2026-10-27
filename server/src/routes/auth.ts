@@ -15,9 +15,11 @@ const passwordSchema = z.string().min(8, '密码至少 8 位').max(64, '密码�
 const usernameSchema = z
     .string()
     .trim()
-    .min(2, '用户名至少 2 个字符')
-    .max(20, '用户名最多 20 个字符')
-    .regex(/^[\w\u4e00-\u9fa5-]+$/, '用户名只能包含中文、字母、数字、下划线与连字符');
+    .refine((v) => [...v].length >= 2, '用户名至少 2 个字符')
+    .refine((v) => [...v].length <= 20, '用户名最多 20 个字符')
+    // 允许中文（含扩展区）、字母、数字、空格、下划线、连字符、点、间隔号等；
+    // 只拦掉会破坏 URL / 路径 / 展示的字符
+    .refine((v) => !/[/\\@<>:"|?*\u0000-\u001f\u007f]/.test(v), '用户名不能包含 / \\ @ < > : " | ? * 等符号');
 
 function clientIp(req: { headers: Record<string, unknown>; ip?: string }): string {
     const xf = req.headers['x-forwarded-for'];
