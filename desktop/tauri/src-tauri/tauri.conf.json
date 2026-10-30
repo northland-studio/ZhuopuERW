@@ -10,6 +10,7 @@
   "app": {
     "windows": [
       {
+        "label": "main",
         "title": "琢璞英语讲评工作台",
         "width": 1440,
         "height": 900,
