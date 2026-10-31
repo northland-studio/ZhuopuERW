@@ -134,6 +134,7 @@ export default function LocalReviews() {
     const [activeQ, setActiveQ] = useState<number | null>(null);
     const [passageIdx, setPassageIdx] = useState(0);
     const [pop, setPop] = useState<{ item: VocabItem; x: number; y: number } | null>(null);
+    const [reviewDir, setReviewDir] = useState('');
 
     const refresh = useCallback(async () => {
         if (!bridge) return;
@@ -160,8 +161,10 @@ export default function LocalReviews() {
     }, [bridge, push]);
 
     useEffect(() => {
-        if (hasDesktop()) void refresh();
-        else setLoading(false);
+        if (!hasDesktop()) { setLoading(false); return; }
+        void refresh();
+        // 顺带取一次 review 目录真实路径，显示在页面上，方便老师把文件放对位置
+        void bridge?.info?.().then((i) => setReviewDir(i?.reviewDir ?? '')).catch(() => {});
         // 只在挂载时读一次，刷新走按钮，避免循环读取
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -223,8 +226,13 @@ export default function LocalReviews() {
                     <div>
                         <h1 style={{ fontSize: 26 }}>本地讲评</h1>
                         <p className="tiny muted" style={{ marginTop: 6 }}>
-                            读取程序目录 <code className="mono">review</code> 文件夹里的 JSON，断网也能讲评。
+                            读取 <code className="mono">review</code> 文件夹里的 JSON，断网也能讲评。
                         </p>
+                        {reviewDir && (
+                            <p className="tiny" style={{ marginTop: 4, color: 'var(--ink-400)', wordBreak: 'break-all' }}>
+                                当前目录：<code className="mono">{reviewDir}</code>
+                            </p>
+                        )}
                     </div>
                     <div className="row" style={{ gap: 8, flexWrap: 'wrap' }}>
                         <button className="btn btn-sm btn-ghost" onClick={() => void refresh()} disabled={loading}>

@@ -40,6 +40,20 @@ type Options = {
     raw?: boolean;
 };
 
+/**
+ * API 前缀：
+ *   - 网页端：同源（''）
+ *   - Electron：同源（主进程有本地静态服务器 + /api 反向代理）
+ *   - Tauri：页面来自 tauri://localhost，没有代理，必须直连线上服务器
+ */
+const API_BASE: string = (() => {
+    if (typeof window === 'undefined') return '';
+    const w = window as Window & { __ZHUOPU_API_BASE__?: string; __TAURI_INTERNALS__?: unknown };
+    if (w.__ZHUOPU_API_BASE__) return w.__ZHUOPU_API_BASE__;
+    if (w.__TAURI_INTERNALS__) return 'https://zhuopu.xuanjian.top';
+    return '';
+})();
+
 export async function api<T = unknown>(path: string, opts: Options = {}): Promise<T> {
     const headers: Record<string, string> = {};
     const token = getToken();
@@ -52,7 +66,7 @@ export async function api<T = unknown>(path: string, opts: Options = {}): Promis
         body = JSON.stringify(opts.body);
     }
 
-    const res = await fetch(path, {
+    const res = await fetch(API_BASE + path, {
         method: opts.method ?? (body ? 'POST' : 'GET'),
         headers,
         body,

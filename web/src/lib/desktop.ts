@@ -56,7 +56,12 @@ function tauriBridge(): DesktopBridge {
         toggleMaximize: async () => (await tauriInvoke<boolean>('window_toggle_maximize')) ?? false,
         close: () => void tauriInvoke('window_close'),
         isMaximized: () => false,
-        info: async () => ({ version: '', platform: 'tauri' }),
+        // 真实的版本号与 review 目录由 Rust 端 app_info 提供
+        info: () =>
+            tauriInvoke<{ version: string; platform: string; reviewDir?: string; packaged?: boolean }>('app_info').catch(() => ({
+                version: '',
+                platform: 'tauri'
+            })),
         review: {
             list: () => tauriInvoke('review_list'),
             read: (name) => tauriInvoke('review_read', { name }),

@@ -19,6 +19,29 @@ export function createApp() {
     app.use(express.urlencoded({ extended: true, limit: '4mb' }));
     app.use(cookieParser());
 
+    /**
+     * Tauri 桌面端跨域：它的页面来自 tauri://localhost（Windows 下是 http://tauri.localhost），
+     * 与线上域名不同源，必须放行这几个来源，否则登录/讲评请求全部失败。
+     * 只允许这三个固定来源，不用通配符（含凭证时通配符本身也不被浏览器接受）。
+     */
+    const TAURI_ORIGINS = new Set(['tauri://localhost', 'http://tauri.localhost', 'https://tauri.localhost']);
+    app.use('/api/', (req, res, next) => {
+        const origin = req.headers.origin;
+        if (typeof origin === 'string' && TAURI_ORIGINS.has(origin)) {
+            res.setHeader('Access-Control-Allow-Origin', origin);
+            res.setHeader('Vary', 'Origin');
+            res.setHeader('Access-Control-Allow-Credentials', 'true');
+            res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
+            res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
+            res.setHeader('Access-Control-Max-Age', '600');
+        }
+        if (req.method === 'OPTIONS') {
+            res.status(204).end();
+            return;
+        }
+        next();
+    });
+
     // 全局限流：只拦 API，避免影响静态资源
     app.use(
         '/api/',

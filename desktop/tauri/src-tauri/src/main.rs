@@ -21,20 +21,37 @@ use tauri::{AppHandle, Manager, WebviewWindow};
 use tauri_plugin_dialog::DialogExt;
 use tauri_plugin_opener::OpenerExt;
 
-/// 讲评文件夹：程序所在目录下的 review/
-fn review_dir(app: &AppHandle) -> PathBuf {
-    let base = app
-        .path()
-        .resource_dir()
-        .or_else(|_| app.path().app_data_dir())
-        .unwrap_or_else(|_| PathBuf::from("."));
-    // 正式包放在可执行文件旁边，便于 U 盘带走；找不到就退到资源目录
-    let exe_side = std::env::current_exe()
+/// 讲评文件夹解析：
+///   1) 优先用「可执行文件同级的 review/」（U 盘/绿色版可随身带走）
+///   2) 但如果程序装在 Program Files 等只读位置，创建会失败 → 退到用户数据目录
+/// 返回 (目录, 是否可写)
+fn resolve_review_dir(app: &AppHandle) -> PathBuf {
+    // 候选 1：exe 同级
+    if let Some(dir) = std::env::current_exe()
         .ok()
-        .and_then(|p| p.parent().map(|d| d.join("review")));
-    let dir = exe_side.unwrap_or_else(|| base.join("review"));
-    let _ = fs::create_dir_all(&dir);
-    dir
+        .and_then(|p| p.parent().map(|d| d.join("review")))
+    {
+        if fs::create_dir_all(&dir).is_ok() {
+            // 真正验证可写（create_dir_all 对已存在目录不会报错）
+            let probe = dir.join(".write-test");
+            if fs::write(&probe, b"ok").is_ok() {
+                let _ = fs::remove_file(&probe);
+                return dir;
+            }
+        }
+    }
+    // 候选 2：用户数据目录（%APPDATA%\top.xuanjian.zhuopu\review）
+    let fallback = app
+        .path()
+        .app_data_dir()
+        .map(|d| d.join("review"))
+        .unwrap_or_else(|_| PathBuf::from("./review"));
+    let _ = fs::create_dir_all(&fallback);
+    fallback
+}
+
+fn review_dir(app: &AppHandle) -> PathBuf {
+    resolve_review_dir(app)
 }
 
 #[tauri::command]
@@ -58,11 +75,20 @@ fn window_close(window: WebviewWindow) -> Result<(), String> {
     window.hide().map_err(|e| e.to_string())
 }
 
+/// 列表元素与前端 DesktopBridge 约定一致：{ name, size, mtime }
+#[derive(serde::Serialize)]
+struct ReviewFile {
+    name: String,
+    size: u64,
+    mtime: u64,
+}
+
 #[tauri::command]
-fn review_list(app: AppHandle) -> Result<Vec<String>, String> {
+fn review_list(app: AppHandle) -> Result<Vec<ReviewFile>, String> {
     let dir = review_dir(&app);
-    let mut names: Vec<String> = fs::read_dir(&dir)
-        .map_err(|e| e.to_string())?
+    let entries = fs::read_dir(&dir).map_err(|e| format!("读取 {} 失败：{}", dir.display(), e))?;
+
+    let mut files: Vec<ReviewFile> = entries
         .filter_map(|e| e.ok())
         .filter(|e| {
             e.path()
@@ -70,10 +96,23 @@ fn review_list(app: AppHandle) -> Result<Vec<String>, String> {
                 .map(|x| x.eq_ignore_ascii_case("json"))
                 .unwrap_or(false)
         })
-        .filter_map(|e| e.file_name().into_string().ok())
+        .filter_map(|e| {
+            let meta = e.metadata().ok()?;
+            let mtime = meta
+                .modified()
+                .ok()
+                .and_then(|t| t.duration_since(std::time::UNIX_EPOCH).ok())
+                .map(|d| d.as_millis() as u64)
+                .unwrap_or(0);
+            Some(ReviewFile {
+                name: e.file_name().into_string().ok()?,
+                size: meta.len(),
+                mtime,
+            })
+        })
         .collect();
-    names.sort();
-    Ok(names)
+    files.sort_by(|a, b| b.mtime.cmp(&a.mtime));
+    Ok(files)
 }
 
 #[tauri::command]
