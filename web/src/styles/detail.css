@@ -473,3 +473,79 @@
 .rd-option-scroll {
     display: inline-block;
 }
+
+/* ================= 字号调节（讲评页，右下角浮动） ================= */
+.rd { --rd-scale: 1; }
+html[data-fs="1"] .rd { --rd-scale: 0.9; }
+html[data-fs="2"] .rd { --rd-scale: 1; }
+html[data-fs="3"] .rd { --rd-scale: 1.1; }
+html[data-fs="4"] .rd { --rd-scale: 1.22; }
+html[data-fs="5"] .rd { --rd-scale: 1.36; }
+
+.rd-text { font-size: calc(17.5px * var(--rd-scale)); }
+.rd-option { font-size: calc(15px * var(--rd-scale)); }
+.rd-reasoning { font-size: calc(14px * var(--rd-scale)); }
+.rd-q-stem { font-size: calc(13px * var(--rd-scale)); }
+.rd-block p { font-size: calc(13.5px * var(--rd-scale)); }
+.rd-cmp-text { font-size: calc(16.5px * var(--rd-scale)); }
+
+.fsctl {
+    position: fixed;
+    right: 22px;
+    bottom: 26px;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.97);
+    border: 1px solid var(--ink-100);
+    box-shadow: 0 8px 24px rgba(16, 12, 12, 0.12);
+    backdrop-filter: blur(8px);
+}
+
+.fsctl button {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: var(--ink-600);
+    font-size: 12.5px;
+    font-weight: 620;
+    transition: background-color 0.16s var(--ease-out), color 0.16s var(--ease-out);
+}
+
+.fsctl button:hover:not(:disabled) { background: var(--brand-50); color: var(--brand); }
+.fsctl button:disabled { opacity: 0.32; cursor: default; }
+.fsctl-val { min-width: 30px; text-align: center; font-size: 11.5px; color: var(--ink-400); }
+
+/* ================= 原文对照栏 ================= */
+.rd-cmp {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 13px 18px;
+    border-radius: var(--radius-md);
+    background: var(--brand-50);
+    border: 1px solid rgba(152, 11, 14, 0.14);
+}
+
+.rd-cmp-label { flex: 0 0 auto; display: flex; align-items: center; gap: 8px; padding-top: 1px; }
+.rd-cmp-text {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    font-family: var(--font-reading);
+    line-height: 1.8;
+    color: var(--ink-800);
+    word-break: break-word;
+}
+.rd-cmp-empty { flex: 1; margin: 0; font-size: 13px; color: var(--ink-400); line-height: 1.9; }
+
+@media (max-width: 720px) {
+    .rd-cmp { flex-direction: column; gap: 8px; }
+    .fsctl { right: 14px; bottom: 16px; }
+}

@@ -4,11 +4,15 @@ import { api } from '../lib/api';
 import { useAuth } from '../lib/auth';
 import { useToast } from '../lib/toast';
 import { desktop, hasDesktop } from '../lib/desktop';
+import { CompareBar } from '../components/CompareBar';
+import { FontSizeControl } from '../components/FontSizeControl';
+import { compareSentence } from '../lib/compare';
 import {
     collectVocab,
     LongSentenceBar,
     PassageText,
     QuestionCard,
+    TYPE_LABEL,
     VocabPopover,
     type Review,
     type Question,
@@ -299,9 +303,16 @@ export default function LocalReviews() {
         (q) => !passage || q.passageId === passage.id || q.passageId === null
     );
     const vocabAll = collectVocab(review);
+    const currentSentence = compareSentence(passage?.content ?? '', current);
 
     return (
         <div className="rd">
+            <CompareBar
+                hasQuestion={!!current}
+                numberLabel={current?.numberLabel}
+                typeLabel={current ? TYPE_LABEL[current.type] : undefined}
+                sentence={currentSentence}
+            />
             <header className="rd-head">
                 <div style={{ flex: 1, minWidth: 0 }}>
                     <h1 className="rd-title" style={{ cursor: 'default' }}>{review.title}</h1>
@@ -379,6 +390,7 @@ export default function LocalReviews() {
             {pop && <VocabPopover {...pop} onClose={() => setPop(null)} />}
 
             <LongSentenceBar review={review} onJump={(idx) => setPassageIdx(idx)} />
+            <FontSizeControl />
         </div>
     );
 }

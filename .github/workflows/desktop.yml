@@ -1,33 +1,28 @@
-name: 桌面端构建（Tauri）
+name: 桌面端构建（Windows）
 
 on:
   push:
     branches: [main, master]
     paths:
-      - "desktop/**"
-      - "web/**"
-      - ".github/workflows/desktop.yml"
+      - 'web/**'
+      - 'desktop/**'
+      - '.github/workflows/desktop.yml'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'scripts/upload-qiniu.mjs'
+      - 'scripts/gen-icon-ico.mjs'
   workflow_dispatch:
-  release:
-    types: [published]
+
+concurrency:
+  group: desktop-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   tauri:
-    name: Tauri（${{ matrix.os }}）
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [windows-latest, ubuntu-latest]
+    name: Tauri（便携 zip）
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: 安装 Tauri 系统依赖（Linux）
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev \
-            patchelf libssl-dev build-essential curl wget file
 
       - uses: actions/setup-node@v4
         with:
@@ -35,15 +30,7 @@ jobs:
 
       - uses: pnpm/action-setup@v4
 
-      - name: 安装 Rust
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: 缓存 Rust
-        uses: swatinem/rust-cache@v2
-        with:
-          workspaces: desktop/tauri/src-tauri
-
-      - name: 构建前端
+      - name: 安装依赖并构建前端
         run: |
           pnpm install --frozen-lockfile --config.minimum-release-age=0
           pnpm --filter zhuopu-web build
@@ -51,18 +38,96 @@ jobs:
       - name: 准备图标
         run: node scripts/gen-icon-ico.mjs
 
+      - name: 安装 Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: 缓存 Rust
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: desktop/tauri/src-tauri -> target
+
       - name: 安装 tauri-cli
         run: cargo install tauri-cli --version "^2" --locked
 
-      - name: 打包
+      - name: 构建（不打安装包）
         working-directory: desktop/tauri/src-tauri
-        run: cargo tauri build
+        run: cargo tauri build --no-bundle
 
-      - name: 上传安装包
+      - name: 打包 zip（单执行文件 + review 文件夹）
+        shell: pwsh
+        run: |
+          $ver = (Get-Content desktop/tauri/src-tauri/tauri.conf.json | ConvertFrom-Json).version
+          $stage = "out/Zhuopu-v$ver-tauri-win-x64"
+          New-Item -ItemType Directory -Force -Path $stage | Out-Null
+          Copy-Item desktop/tauri/src-tauri/target/release/zhuopu-desktop.exe "$stage/" -Force
+          New-Item -ItemType Directory -Force -Path "$stage/review" | Out-Null
+          Set-Content -Path "$stage/review/说明.txt" -Encoding utf8 -Value "把讲评 JSON 放进这个文件夹，打开客户端后进入「本地讲评」即可断网使用。"
+          Compress-Archive -Path "$stage/*" -DestinationPath "out/Zhuopu-v$ver-tauri-win-x64.zip" -Force
+          Get-Item "out/Zhuopu-v$ver-tauri-win-x64.zip" | ForEach-Object { "zip: $($_.Name) $([math]::Round($_.Length/1MB,1))MB" }
+
+      - name: 上传到七牛 CDN
+        env:
+          QINIU_ACCESS_KEY: ${{ secrets.QINIU_ACCESS_KEY }}
+          QINIU_SECRET_KEY: ${{ secrets.QINIU_SECRET_KEY }}
+          QINIU_BUCKET: zhuopu
+          QINIU_UPLOAD_URL: https://up-as0.qiniup.com
+          QINIU_DOMAIN: https://cdn.zp.xuanjian.top
+        shell: pwsh
+        run: |
+          $ver = (Get-Content desktop/tauri/src-tauri/tauri.conf.json | ConvertFrom-Json).version
+          node scripts/upload-qiniu.mjs "out/Zhuopu-v$ver-tauri-win-x64.zip" "zhuopu/v$ver/Zhuopu-v$ver-tauri-win-x64.zip" --bucket=zhuopu
+
+      - name: 上传产物
         uses: actions/upload-artifact@v4
         with:
-          name: tauri-${{ runner.os }}
-          path: |
-            desktop/tauri/src-tauri/target/release/bundle/**
-          if-no-files-found: warn
+          name: zhuopu-tauri-windows-zip
+          path: out/*.zip
+          if-no-files-found: error
+          retention-days: 30
+
+  electron:
+    name: Electron（安装包）
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - uses: pnpm/action-setup@v4
+
+      - name: 安装依赖并构建前端
+        run: |
+          pnpm install --frozen-lockfile --config.minimum-release-age=0
+          pnpm --filter zhuopu-web build
+          node scripts/copy-web-dist.mjs
+
+      - name: 构建安装包
+        working-directory: desktop/electron
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+        run: |
+          npm install --no-audit --no-fund
+          npx electron-builder --win --x64 --publish never
+
+      - name: 上传到七牛 CDN
+        env:
+          QINIU_ACCESS_KEY: ${{ secrets.QINIU_ACCESS_KEY }}
+          QINIU_SECRET_KEY: ${{ secrets.QINIU_SECRET_KEY }}
+          QINIU_BUCKET: zhuopu
+          QINIU_UPLOAD_URL: https://up-as0.qiniup.com
+          QINIU_DOMAIN: https://cdn.zp.xuanjian.top
+        shell: pwsh
+        run: |
+          $ver = (Get-Content package.json | ConvertFrom-Json).version
+          $src = Get-ChildItem desktop/electron/release/*.exe | Select-Object -First 1
+          node scripts/upload-qiniu.mjs $src.FullName "zhuopu/v$ver/Zhuopu-v$ver-electron-win-x64-setup.exe" --bucket=zhuopu
+
+      - name: 上传产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: zhuopu-electron-windows-installer
+          path: desktop/electron/release/*.exe
+          if-no-files-found: error
           retention-days: 30

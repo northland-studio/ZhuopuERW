@@ -55,6 +55,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
                                 本地讲评
                             </NavLink>
                         )}
+                        {!hasDesktop() && (
+                            <NavLink to="/download" className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}>
+                                下载客户端
+                            </NavLink>
+                        )}
                         {user ? (
                             <div style={{ position: 'relative' }} ref={menuRef}>
                                 <button
@@ -121,6 +126,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     <NavLink to="/reviews" className="nav-link" onClick={() => setSheetOpen(false)}>我的讲评</NavLink>
                     {hasDesktop() && (
                         <NavLink to="/local" className="nav-link" onClick={() => setSheetOpen(false)}>本地讲评</NavLink>
+                    )}
+                    {!hasDesktop() && (
+                        <NavLink to="/download" className="nav-link" onClick={() => setSheetOpen(false)}>下载客户端</NavLink>
                     )}
                     {user ? (
                         <>

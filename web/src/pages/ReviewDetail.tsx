@@ -2,6 +2,9 @@ import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'rea
 import { useNavigate, useParams } from 'react-router-dom';
 import { api, download } from '../lib/api';
 import { useToast } from '../lib/toast';
+import { CompareBar } from '../components/CompareBar';
+import { FontSizeControl } from '../components/FontSizeControl';
+import { compareSentence } from '../lib/compare';
 import { desktop, hasDesktop } from '../lib/desktop';
 import '../styles/detail.css';
 
@@ -94,6 +97,13 @@ export default function ReviewDetail() {
         [review, activeQ]
     );
 
+    /** 对照句：当前选中题目在原文中的对应整句 */
+    const currentSentence = useMemo(() => {
+        if (!review || !current) return '';
+        const passage = review.passages.find((p) => p.id === current.passageId) ?? review.passages[0];
+        return compareSentence(passage?.content ?? '', current);
+    }, [review, current]);
+
     useEffect(() => {
         if (!current || !review) return;
         const idx = review.passages.findIndex((p) => p.id === current.passageId);
@@ -171,6 +181,12 @@ export default function ReviewDetail() {
 
     return (
         <div className="rd">
+            <CompareBar
+                hasQuestion={!!current}
+                numberLabel={current?.numberLabel}
+                typeLabel={current ? TYPE_LABEL[current.type] : undefined}
+                sentence={currentSentence}
+            />
             <header className="rd-head">
                 <div style={{ flex: 1, minWidth: 0 }}>
                     {renaming ? (
@@ -279,6 +295,7 @@ export default function ReviewDetail() {
 
             {/* 页面底部：每篇原文的长难句汇总（讲评时整篇看结构） */}
             <LongSentenceBar review={review} onJump={(idx) => setActivePassage(idx)} />
+            <FontSizeControl />
 
             {pop && <VocabPopover {...pop} onClose={() => setPop(null)} />}
 

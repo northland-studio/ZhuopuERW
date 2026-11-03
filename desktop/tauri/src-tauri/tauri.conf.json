@@ -1,6 +1,6 @@
 {
   "productName": "琢璞英语讲评工作台",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "identifier": "top.xuanjian.zhuopu",
   "build": {
     "beforeDevCommand": "",
@@ -32,12 +32,8 @@
     }
   },
   "bundle": {
-    "active": true,
-    "targets": [
-      "nsis",
-      "app",
-      "appimage"
-    ],
+    "active": false,
+    "targets": [],
     "icon": [
       "icons/icon.png",
       "icons/icon.ico"
