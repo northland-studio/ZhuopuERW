@@ -43,3 +43,9 @@ scripts/.env.production
 _*.tgz
 _*.zip
 desktop/electron/release/
+
+_tauri_zip/
+_tauri_dl/
+_upd/
+_tauri_dl
+_probe.txt

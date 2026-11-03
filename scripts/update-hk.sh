@@ -19,11 +19,12 @@ for d in web/dist server/dist; do
     fi
 done
 mkdir -p "$APP/web" "$APP/server"
-mv "$TMP/web/dist" "$APP/web/dist"
-mv "$TMP/server/dist" "$APP/server/dist"
+# 支持只更新一端：压缩包里没有的那个目录保持线上原样
+if [ -d "$TMP/web/dist" ]; then mv "$TMP/web/dist" "$APP/web/dist"; else echo "  本次不更新 web/dist（压缩包未包含）"; fi
+if [ -d "$TMP/server/dist" ]; then mv "$TMP/server/dist" "$APP/server/dist"; else echo "  本次不更新 server/dist（压缩包未包含）"; fi
 
 echo "== 3. 依赖（仅在 package.json 变化时安装）=="
-if ! diff -q "$TMP/server/package.json" "$APP/server/package.json" >/dev/null 2>&1; then
+if [ -f "$TMP/server/package.json" ] && ! diff -q "$TMP/server/package.json" "$APP/server/package.json" >/dev/null 2>&1; then
     cp "$TMP/server/package.json" "$APP/server/package.json"
     cd "$APP/server" && npm install --omit=dev --no-audit --no-fund 2>&1 | tail -3
 else
